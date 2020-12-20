@@ -44,3 +44,13 @@ declare const __DEV__: boolean; // eslint-disable-line no-underscore-dangle
 
 // Переменные окружения доступные на сервере и на клиенте
 declare const env: Record<string, string>;
+
+interface IWindow extends Window {
+  ssrData?: {
+    i18nData: {
+      locale: string;
+      resources: Record<string, any>[];
+    };
+    state: IGlobalState;
+  };
+}

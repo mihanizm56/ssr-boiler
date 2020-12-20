@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { I18NextRequest } from 'i18next-express-middleware';
-import * as React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { cloneRouter } from 'router5';
 import { configureRouter } from '@/modules/router';
@@ -44,7 +44,7 @@ export const ssr = async (
     // ru – i18n локаль по умолчанию
     const locale = 'ru';
 
-    // Клонирование базового роутера для обработки запроса
+    // Клонирование базового роутера для обработки запроса ???
     const router = cloneRouter(baseRouter, baseRouter.getDependencies());
     router.setDependencies({
       redux,
@@ -77,17 +77,17 @@ export const ssr = async (
       });
     });
 
-    const DI = router.getDependencies();
+    const routerDeps = router.getDependencies();
 
     // Результат выполнения экшена текущего роута
-    const routeActionResult: IActionResult = DI.getRouteActionResult(
+    const routeActionResult: IActionResult = routerDeps.getRouteActionResult(
       route.name,
     );
 
     // Загрузка чанков и локализации для текущего роута
     const routeResources = {
-      chunks: DI.getChunks(route.name),
-      i18nResources: DI.getI18nResources(route.name),
+      chunks: routerDeps.getChunks(route.name),
+      i18nResources: routerDeps.getI18nResources(route.name),
     };
 
     // Чанки скриптов и стилей для текущего роута

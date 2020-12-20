@@ -14,17 +14,7 @@ import { configureCookies } from '@/modules/cookies';
 import { Page as ErrorPage } from '@/pages/error/page';
 import { App } from '@/_components/app';
 
-interface ICustomWindow extends Window {
-  ssrData?: {
-    i18nData: {
-      locale: string;
-      resources: Record<string, any>[];
-    };
-    state: IGlobalState;
-  };
-}
-
-const customWindow = window as ICustomWindow;
+const customWindow = window as IWindow;
 
 // Применение переводов полученных на сервере
 const { i18nData } = customWindow.ssrData;

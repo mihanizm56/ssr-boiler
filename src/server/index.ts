@@ -11,7 +11,6 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import { i18n } from '@/modules/i18n';
 import { ssr } from './handlers/ssr';
 import { errors } from './handlers/errors';
-import { devProxies } from './dev-proxies';
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -21,19 +20,12 @@ process.on('unhandledRejection', (reason, p) => {
 const app = express();
 
 // Проксирование внешних сервисов api для разработки на localhost
-if (env.ENABLE_PROXY === 'Y') {
-  devProxies.forEach((service) => {
-    const [serviceUrl, servicePseudoPath] = service;
-    createProxyMiddleware(`${servicePseudoPath}*`, {
-      target: serviceUrl,
-      changeOrigin: true,
-      followRedirects: true,
-      // Удаляем домен из кук которые устанавливаются через прокси
-      cookieDomainRewrite: '',
-      pathRewrite: {
-        [`^${servicePseudoPath}`]: '',
-      },
-    });
+if (process.env.NODE_ENV === 'development') {
+  createProxyMiddleware('/api', {
+    target: 'http://localhost:8080',
+    changeOrigin: true,
+    // Удаляем домен из кук которые устанавливаются через прокси
+    // cookieDomainRewrite: '',
   });
 }
 
@@ -50,11 +42,6 @@ app.use(
   }),
 );
 
-// Проба liveness для k8s
-app.get('/liveness', (req, res) => {
-  res.send('');
-});
-
 // Обработка запросов ssr
 app.get('*', ssr);
 
@@ -64,7 +51,7 @@ app.use(errors);
 // Запуск сервера
 if (!module.hot) {
   app.listen(env.PORT, () => {
-    console.info(`The server is running at http://localhost:${env.PORT}/`);
+    console.info(`The server is running at port ${env.PORT}`);
   });
 }
 

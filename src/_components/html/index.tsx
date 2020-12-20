@@ -75,7 +75,7 @@ export const Html = ({
         id="app"
       />
       <script
-        // env переменные доступные на клиенте
+        // env переменные доступные на клиенте ??? (оптимизировать)
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: `

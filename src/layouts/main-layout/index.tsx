@@ -1,15 +1,15 @@
 import React, { Props } from 'react';
-import { Link } from '@/_components/link';
+import { ConnectedLink } from 'react-router5';
 import s from './index.scss';
 
 export const MainLayout = React.memo(({ children }: Props<any>) => (
   <div className={s.root}>
     <nav>
-      <Link routeName="home">Home</Link>
+      <ConnectedLink routeName="home">Home</ConnectedLink>
       <br />
-      <Link routeName="page1">Page 1</Link>
+      <ConnectedLink routeName="page1">Page 1</ConnectedLink>
       <br />
-      <Link routeName="page2">Page 2</Link>
+      <ConnectedLink routeName="page2">Page 2</ConnectedLink>
     </nav>
     <div className={s.content}>{children}</div>
   </div>
