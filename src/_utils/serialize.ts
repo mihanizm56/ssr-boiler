@@ -34,6 +34,7 @@ interface IOptions {
   unsafe?: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 const serialize = (obj: object, options: IOptions = {}): string => {
   // Backwards-compatibility for `space` as the second argument.
   if (typeof options === 'number' || typeof options === 'string') {

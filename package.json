@@ -77,6 +77,11 @@
       "__CLIENT__": false,
       "location": false,
       "env": false
+    },
+    "rules": {
+      "@typescript-eslint/interface-name-prefix": 0,
+      "@typescript-eslint/explicit-module-boundary-types": 0,
+      "jsx-a11y/html-has-lang": 0
     }
   },
   "stylelint": {
@@ -93,7 +98,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS -g config/git/commitlint.js",
-      "pre-commit": "npx tsc && npm run build && git add .",
+      "pre-commit": "npm run lint && npx tsc && npm run build && git add .",
       "prepare-commit-msg": "node config/git/prepare-commit.js"
     }
   }
