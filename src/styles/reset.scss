@@ -1,0 +1,41 @@
+:global {
+  html,
+  body {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  input,
+  label,
+  select,
+  button,
+  textarea {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    white-space: normal;
+    vertical-align: middle;
+    background: none;
+    border: 0;
+    outline: none;
+  }
+
+  [role="button"] {
+    outline: none;
+  }
+
+  button,
+  select,
+  [role="button"] {
+    user-select: none;
+  }
+}

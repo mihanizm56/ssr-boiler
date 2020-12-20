@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "allowJs": false,
+    "jsx": "react",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+    },
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "lib": [
+      "es6",
+      "dom",
+      "es2017"
+    ],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "./src/**/*",
+  ],
+  "exclude": [
+    "node_modules",
+  ],
+}
