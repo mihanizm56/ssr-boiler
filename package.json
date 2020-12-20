@@ -51,7 +51,7 @@
     "router5-plugin-browser": "8.0.1",
     "router5-plugin-logger": "8.0.1",
     "router5-transition-path": "8.0.1",
-    "ssr-scripts": "git+https://github.com/imsitnikov/ssr-scripts.git"
+    "ssr-scripts": "git+https://github.com/mihanizm56/ssr-config.git"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "3.0.0",
