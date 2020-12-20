@@ -44,9 +44,7 @@ export class App extends React.PureComponent<IProps, IState> {
               {error ? (
                 <ErrorPage />
               ) : (
-                <RouteNode nodeName="">
-                  {({ content }) => content || <ErrorPage />}
-                </RouteNode>
+                <RouteNode nodeName="">{({ content }) => content}</RouteNode>
               )}
             </RouterProvider>
           </I18nextProvider>
