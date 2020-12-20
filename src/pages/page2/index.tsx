@@ -14,6 +14,7 @@ const action = async ({ i18n }) => ({
           if (route.name === pageNode) {
             return <Page />;
           }
+
           return content;
         }}
       </RouteNode>

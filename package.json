@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=12.16.1"
+    "node": ">=12.13.0"
   },
   "browserslist": [
     "last 3 versions",
@@ -52,12 +52,49 @@
     "@types/react-dom": "16.9.8",
     "@types/react-redux": "7.1.9",
     "husky": "4.2.5",
-    "react-deep-force-update": "2.1.3"
+    "react-deep-force-update": "2.1.3",
+    "@wildberries/eslint-config": "1.0.7",
+    "@wildberries/stylelint-config": "1.0.0",
+    "@commitlint/cli": "8.2.0",
+    "commitizen": "4.0.4",
+    "cz-customizable": "6.2.0"
   },
   "scripts": {
     "start": "ssr-scripts start",
     "build": "ssr-scripts build",
     "build-analyse": "npm run build -- --release --analyse",
-    "build-start": "npm run build -- --release && node ./build/server.js"
+    "build-start": "npm run build -- --release && node ./build/server.js",
+    "lint": "npx eslint src/ --ext .ts,.js,.tsx --fix && npx stylelint --fix --max-warnings=0 'src/**/*.{modules.scss,scss,css}' && git add .",
+    "commit": "git add . && git commit --no-edit"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@wildberries"
+    ],
+    "globals": {
+      "__DEV__": true,
+      "__SERVER__": false,
+      "__CLIENT__": false,
+      "location": false,
+      "env": false
+    }
+  },
+  "stylelint": {
+    "extends": "@wildberries/stylelint-config"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "config/git/commitizen.js"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS -g config/git/commitlint.js",
+      "pre-commit": "npx tsc && npm run build",
+      "prepare-commit-msg": "node config/git/prepare-commit.js"
+    }
   }
 }

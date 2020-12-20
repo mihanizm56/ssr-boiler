@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React, { Props } from 'react';
 import { Link } from '@/_components/link';
 import s from './index.scss';
 
-export const MainLayout = React.memo(({ children }) => (
+export const MainLayout = React.memo(({ children }: Props<any>) => (
   <div className={s.root}>
     <nav>
       <Link routeName="home">Home</Link>

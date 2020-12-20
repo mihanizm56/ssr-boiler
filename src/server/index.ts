@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import 'core-js';
 import 'regenerator-runtime/runtime';
 import './server-set-env';
@@ -20,7 +22,7 @@ const app = express();
 
 // Проксирование внешних сервисов api для разработки на localhost
 if (env.ENABLE_PROXY === 'Y') {
-  devProxies.forEach(service => {
+  devProxies.forEach((service) => {
     const [serviceUrl, servicePseudoPath] = service;
     createProxyMiddleware(`${servicePseudoPath}*`, {
       target: serviceUrl,

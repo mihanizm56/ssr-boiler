@@ -130,7 +130,7 @@ export const ssr = async (
         i18nData: { locale, resources: routeResources.i18nResources },
       },
       children: ReactDOM.renderToString(
-        <App router={router} redux={redux} i18n={req.i18n} cookies={cookies} />,
+        <App cookies={cookies} i18n={req.i18n} redux={redux} router={router} />,
       ),
     };
 

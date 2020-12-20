@@ -25,6 +25,7 @@ export const RouteNode = ({ nodeName, children }: IProps) => (
 
       const DI = router.getDependencies();
       const actionResult = DI.getSegmentActionResult(route.name, nodeName);
+
       return children({
         router,
         route,

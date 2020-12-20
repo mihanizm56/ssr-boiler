@@ -33,7 +33,7 @@ i18n.changeLanguage(locale);
 if (i18nData && i18nData.resources) {
   const translations = Object.keys(i18nData.resources);
   if (translations.length > 0) {
-    translations.forEach(translation => {
+    translations.forEach((translation) => {
       i18n.addResourceBundle(
         i18nData.locale,
         translation,
@@ -91,12 +91,12 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
     router.start(() => {
       render(
         <App
-          ref={node => {
+          ref={(node) => {
             appInstance = node;
           }}
-          redux={redux}
           cookies={cookies}
           i18n={i18n}
+          redux={redux}
           router={router}
         />,
         container,
@@ -112,7 +112,7 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
   } catch (err) {
     ReactDOM.render(
       <ErrorPage
-        ref={node => {
+        ref={(node) => {
           appInstance = node;
         }}
       />,

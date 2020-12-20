@@ -52,15 +52,15 @@ export const actionHandler = (router: Router): Middleware => async (
           // Промис экшена роута
           let actionPromise: Promise<IAction>;
           if (typeof route.loadAction === 'function') {
-            actionPromise = new Promise(resolveActionLoad => {
+            actionPromise = new Promise((resolveActionLoad) => {
               route
                 .loadAction(redux)
-                .catch(err => {
+                .catch((err) => {
                   // Если не удалось загрузить чанк переходим на url напрямую
                   // Кейс возможен при выкатке новой версии когда имена чанков меняются
                   if (__CLIENT__) {
                     // Создаем промис который не резолвится для избежания вывода ошибки перехода
-                    resolve(new Promise(() => {}));
+                    resolve(new Promise(() => {})); // eslint-disable-line
 
                     // Перезапрашиваем страницу по новому url с сервера
                     window.location.href = toState.path;
@@ -84,10 +84,12 @@ export const actionHandler = (router: Router): Middleware => async (
                 (result: IActionResult): IAdvancedRoute => {
                   if (result.error) {
                     parentError = prepareError(result.error);
+
                     return Object.assign(route, {
                       actionResult: prepareError(result.error),
                     });
                   }
+
                   return Object.assign(route, { actionResult: result });
                 },
               )

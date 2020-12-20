@@ -9,7 +9,7 @@ dotenv.config({
 
 // env переменные доступные на сервере
 const env = {};
-availableEnvKeys.forEach(key => {
+availableEnvKeys.forEach((key) => {
   env[key] = process.env[key];
 });
 

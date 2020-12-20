@@ -9,5 +9,6 @@ export const getRouteActionResult = (
 ): IActionResult | null => {
   const { routes } = router.getDependencies();
   const route = getRoute(name, routes);
+
   return route.actionResult || null;
 };

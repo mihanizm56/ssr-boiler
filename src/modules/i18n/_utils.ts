@@ -25,16 +25,17 @@ export const loadNamespaces = async ({
       resources.common = commonTranslations;
     }
     if (namespaces && namespaces.length > 0) {
-      namespaces.forEach(namespace => {
+      namespaces.forEach((namespace) => {
         translationNamespaces.push(namespace);
       });
     }
     if (translationNamespaces.length > 0) {
       await instance.loadNamespaces(translationNamespaces);
-      translationNamespaces.forEach(namespace => {
+      translationNamespaces.forEach((namespace) => {
         resources[namespace] = instance.getResourceBundle(locale, namespace);
       });
     }
+
     return resources;
   }
   if (__CLIENT__) {
@@ -45,13 +46,14 @@ export const loadNamespaces = async ({
       translationNamespaces.push('common');
     }
     if (namespaces && namespaces.length > 0) {
-      namespaces.forEach(namespace => {
+      namespaces.forEach((namespace) => {
         translationNamespaces.push(namespace);
       });
     }
     if (translationNamespaces.length > 0) {
       await instance.loadNamespaces(translationNamespaces);
     }
+
     return {};
   }
 

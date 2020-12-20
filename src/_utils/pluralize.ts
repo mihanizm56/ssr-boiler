@@ -16,5 +16,6 @@ export const pluralize = (
   if (n >= 2 && n <= 4) {
     return two;
   }
+
   return five;
 };

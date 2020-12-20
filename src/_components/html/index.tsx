@@ -33,46 +33,46 @@ export const Html = ({
   <html>
     <head>
       <meta charSet="utf-8" />
-      <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+      <meta content="ie=edge" httpEquiv="x-ua-compatible" />
       <meta
-        name="viewport"
         content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0"
+        name="viewport"
       />
 
       <title>{title}</title>
 
-      {description && <meta name="description" content={description} />}
-      {keywords && <meta name="keywords" content={keywords} />}
-      {canonical && <link rel="canonical" href={canonical} />}
+      {description && <meta content={description} name="description" />}
+      {keywords && <meta content={keywords} name="keywords" />}
+      {canonical && <link href={canonical} rel="canonical" />}
 
       {/* Мета теги Open Graph */}
-      <meta property="og:title" content={title} />
+      <meta content={title} property="og:title" />
       {ogDescription && (
-        <meta property="og:description" content={description} />
+        <meta content={description} property="og:description" />
       )}
-      {ogUrl && <meta property="og:url" content={ogUrl} />}
-      {ogImage && <meta property="og:image" content={ogImage} />}
+      {ogUrl && <meta content={ogUrl} property="og:url" />}
+      {ogImage && <meta content={ogImage} property="og:image" />}
 
-      {styles.map(style => (
-        <link key={style} rel="preload" href={style} as="style" />
+      {styles.map((style) => (
+        <link key={style} as="style" href={style} rel="preload" />
       ))}
-      {scripts.map(script => (
-        <link key={script} rel="preload" href={script} as="script" />
+      {scripts.map((script) => (
+        <link key={script} as="script" href={script} rel="preload" />
       ))}
-      <link rel="shortcut icon" type="image/png" href="/static/favicon.ico" />
+      <link href="/static/favicon.ico" rel="shortcut icon" type="image/png" />
       <link
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=cyrillic-ext"
         rel="stylesheet"
       />
-      {styles.map(style => (
+      {styles.map((style) => (
         <link key={style} rel="stylesheet" href={style} /> // eslint-disable-line
       ))}
     </head>
     <body>
       <div
-        id="app"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: children }}
+        id="app"
       />
       <script
         // env переменные доступные на клиенте
@@ -81,8 +81,8 @@ export const Html = ({
           __html: `
             window.env = {
               ${availableEnvKeys
-                .filter(key => env[key])
-                .map(key => `'${key}': '${env[key]}'`)
+                .filter((key) => env[key])
+                .map((key) => `'${key}': '${env[key]}'`)
                 .join(',')}
             };
           `,
@@ -94,7 +94,7 @@ export const Html = ({
           __html: `window.ssrData = ${serialize(ssrData)};`,
         }}
       />
-      {scripts.map(script => (
+      {scripts.map((script) => (
         <script key={script} src={script} />
       ))}
     </body>

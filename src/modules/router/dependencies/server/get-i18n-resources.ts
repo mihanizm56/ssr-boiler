@@ -8,5 +8,6 @@ export const getI18nResources = (
 ): Record<string, any> => {
   const { routes } = router.getDependencies();
   const route = getRoute(name, routes);
+
   return route.i18nResources || null;
 };

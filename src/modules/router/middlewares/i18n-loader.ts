@@ -23,7 +23,7 @@ export const i18nLoader = (router: Router): Middleware => (
       locale: i18n.locale,
       instance: i18n.instance,
     })
-      .then(res => {
+      .then((res) => {
         if (__SERVER__) {
           const route = getRoute(toState.name, routes);
           Object.assign(route, { i18nResources: res });

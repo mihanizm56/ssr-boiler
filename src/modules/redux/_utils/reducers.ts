@@ -8,10 +8,10 @@ const combineAsyncReducers = (
 ) => {
   const reducerKeys = new Set(Object.keys(reducers));
   Object.keys(initialState)
-    .filter(k => !reducerKeys.has(k))
-    .forEach(k => {
+    .filter((k) => !reducerKeys.has(k))
+    .forEach((k) => {
       // eslint-disable-next-line no-param-reassign
-      reducers[k] = state => (state === undefined ? null : state);
+      reducers[k] = (state) => (state === undefined ? null : state);
     });
 
   return combineReducers<IGlobalState, AnyAction>(reducers);

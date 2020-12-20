@@ -32,6 +32,7 @@ export const getActivatedRoutes = (
   if (!toActivate.includes(toState.name)) {
     toActivate.push(toState.name);
   }
+
   return toActivate.map(
     (segment: string): IAdvancedRoute => getRoute(segment, routes),
   );
@@ -44,6 +45,7 @@ export const cloneRoutes = (routes: IAdvancedRoute[]): IAdvancedRoute[] =>
       if (route.children && route.children.length > 0) {
         newRoute.children = cloneRoutes(route.children);
       }
+
       return newRoute;
     },
   );

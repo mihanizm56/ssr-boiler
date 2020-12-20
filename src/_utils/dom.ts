@@ -42,6 +42,7 @@ export const getWindowScroll = (): { left: number; top: number } => {
   const doc = document.documentElement;
   const left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
   const top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+
   return { left, top };
 };
 
@@ -54,5 +55,6 @@ export const getWindowSize = (): { width: number; height: number } => {
     window.innerHeight ||
     document.documentElement.clientHeight ||
     document.body.clientHeight;
+
   return { width, height };
 };

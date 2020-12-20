@@ -12,6 +12,7 @@ export const Translation = React.memo(({ children, ...props }: IProps) => (
       // Если не подгрузился перевод фразы, выводим ключ
       // стандартная реализация крашит приложение
       const wrappedT = (key: string) => t(key) || key;
+
       return children(wrappedT);
     }}
   </ReactI18NextTranslation>

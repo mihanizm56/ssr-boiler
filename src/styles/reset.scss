@@ -1,11 +1,11 @@
 :global {
   html,
   body {
-    position: relative;
-    padding: 0;
-    margin: 0;
     -webkit-font-smoothing: antialiased;
+    margin: 0;
     -webkit-overflow-scrolling: touch;
+    padding: 0;
+    position: relative;
   }
 
   * {
@@ -18,15 +18,15 @@
   select,
   button,
   textarea {
-    display: inline-block;
-    padding: 0;
-    margin: 0;
-    line-height: 1;
-    white-space: normal;
-    vertical-align: middle;
     background: none;
     border: 0;
+    display: inline-block;
+    line-height: 1;
+    margin: 0;
     outline: none;
+    padding: 0;
+    vertical-align: middle;
+    white-space: normal;
   }
 
   [role="button"] {
