@@ -11,7 +11,6 @@ import { i18n } from '@/modules/i18n';
 import { IGlobalState } from '@/modules/redux/_types';
 import { configureRedux } from '@/modules/redux';
 import { configureCookies } from '@/modules/cookies';
-import { configureApi } from '@/modules/api';
 import { Page as ErrorPage } from '@/pages/error/page';
 import { App } from '@/_components/app';
 
@@ -48,9 +47,6 @@ if (i18nData && i18nData.resources) {
 // Конфигрурирование cookies
 const cookies = configureCookies();
 
-// Конфигрурирование api
-const api = configureApi();
-
 // Применение стора вычесленного на сервере
 const initialState: IGlobalState =
   (customWindow.ssrData && customWindow.ssrData.state) || {};
@@ -58,7 +54,6 @@ const initialState: IGlobalState =
 // Конфигрурирование redux
 const redux = configureRedux(initialState, {
   cookies,
-  api,
 });
 
 // Удаление ssrData из памяти

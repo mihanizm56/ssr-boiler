@@ -11,10 +11,11 @@ export const setCookieForYear = ({
   value: CookieValueType;
   domain?: string;
 }) => {
-  const date = new Date();
-  date.setFullYear(date.getFullYear() + 1);
+  const expires = new Date();
+  expires.setFullYear(expires.getFullYear() + 1);
+
   cookies.set(key, value, {
-    expires: date,
+    expires,
     path: '/',
     ...(domain ? { domain } : {}),
   });
@@ -31,10 +32,11 @@ export const setCookieForMonth = ({
   value: CookieValueType;
   domain?: string;
 }) => {
-  const date = new Date();
-  date.setMonth(date.getMonth() + 1);
+  const expires = new Date();
+  expires.setMonth(expires.getMonth() + 1);
+
   cookies.set(key, value, {
-    expires: date,
+    expires,
     path: '/',
     ...(domain ? { domain } : {}),
   });

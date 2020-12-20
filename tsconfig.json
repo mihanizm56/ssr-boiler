@@ -9,22 +9,21 @@
         "src/*"
       ],
     },
-    "sourceMap": true,
-    "esModuleInterop": true,
     "lib": [
-      "es6",
       "dom",
-      "es2017"
+      "dom.iterable"
     ],
-    "module": "esnext",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "isolatedModules": true,
+    "noEmit": true,
+    "module": "esnext"
   },
   "include": [
-    "./src/**/*",
-  ],
-  "exclude": [
-    "node_modules",
-  ],
+    "./src/",
+  ]
 }

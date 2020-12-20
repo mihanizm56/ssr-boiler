@@ -9,7 +9,6 @@ import { getI18nResources } from '@/modules/router/dependencies/server/get-i18n-
 import { IActionResult, IAdvancedRoute } from '@/modules/router/_types';
 import { configureRedux } from '@/modules/redux';
 import { configureCookies } from '@/modules/cookies';
-import { configureApi } from '@/modules/api';
 import { Html, IProps as IHtmlProps } from '@/_components/html';
 import { App } from '@/_components/app';
 // Файл chunk-manifest.json генерируется при сборке и позволяет мапить чанки для сервера и клиента по роутам
@@ -31,15 +30,11 @@ export const ssr = async (
     // Конфигрурирование cookies
     const cookies = configureCookies(req, res);
 
-    // Конфигрурирование api
-    const api = configureApi(req);
-
     // Конфигрурирование redux
     const redux = configureRedux(
       {},
       {
         cookies,
-        api,
       },
     );
 
