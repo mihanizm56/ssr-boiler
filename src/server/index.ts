@@ -12,6 +12,8 @@ import { i18n } from '@/modules/i18n';
 import { ssr } from './handlers/ssr';
 import { errors } from './handlers/errors';
 
+const PORT = env.PORT || 3000;
+
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
   process.exit(1);
@@ -50,8 +52,8 @@ app.use(errors);
 
 // Запуск сервера
 if (!module.hot) {
-  app.listen(env.PORT, () => {
-    console.info(`The server is running at port ${env.PORT}`);
+  app.listen(PORT, () => {
+    console.info(`The server is running at port ${PORT}`);
   });
 }
 
