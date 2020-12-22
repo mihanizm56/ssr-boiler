@@ -67,8 +67,8 @@
     "start:production": "node ./build/server.js",
     "start": "ssr-scripts start",
     "build": "ssr-scripts build",
-    "build-analyse": "npm run build -- --release --analyse",
-    "build-start": "npm run build -- --release && node ./build/server.js",
+    "build-analyse": "ssr-scripts build:analyse",
+    "build-start": "npm run build && node ./build/server.js",
     "lint": "npx eslint src/ --ext .ts,.js,.tsx --fix && npx stylelint --fix --max-warnings=0 'src/**/*.{modules.scss,scss,css}' && git add .",
     "commit": "git add . && git commit --no-edit"
   },

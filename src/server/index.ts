@@ -11,6 +11,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import { i18n } from '@/modules/i18n';
 import { ssr } from './handlers/ssr';
 import { errors } from './handlers/errors';
+import { initJSBrotliMiddleware } from './middlewares/brotli';
 
 const PORT = env.PORT || 3000;
 
@@ -31,8 +32,17 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
+// перехватываем js и css файлы
+// и проставляем заголовки для браузера чтобы брал файлы с расширением .br
+initJSBrotliMiddleware(app);
+
 // Путь до статики
-app.use('/static', express.static(path.resolve(__dirname, 'public')));
+app.use(
+  '/static',
+  express.static(path.resolve(__dirname, 'public'), {
+    maxAge: '30d',
+  }),
+);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
