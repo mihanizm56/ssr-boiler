@@ -16,6 +16,7 @@
     "classnames": "2.2.5",
     "cookie-universal": "2.1.4",
     "core-js": "3.6.5",
+    "cross-env": "7.0.3",
     "dotenv": "8.2.0",
     "enquirer": "2.3.6",
     "express": "4.17.1",
@@ -65,8 +66,8 @@
   },
   "scripts": {
     "start:production": "node ./build/server.js",
-    "start": "ssr-scripts start",
-    "build": "ssr-scripts build",
+    "start": "npx cross-env NODE_ENV=development ssr-scripts start",
+    "build": "npx cross-env NODE_ENV=production ssr-scripts build",
     "build-analyse": "ssr-scripts build:analyse",
     "build-start": "npm run build && node ./build/server.js",
     "lint": "npx eslint src/ --ext .ts,.js,.tsx --fix && npx stylelint --fix --max-warnings=0 'src/**/*.{modules.scss,scss,css}' && git add .",

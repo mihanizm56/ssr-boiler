@@ -7,13 +7,14 @@ import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 import i18nextExpressMiddleware from 'i18next-express-middleware';
-import { createProxyMiddleware } from 'http-proxy-middleware';
 import { i18n } from '@/modules/i18n';
+import { setupProxy } from './proxy';
 import { ssr } from './handlers/ssr';
 import { errors } from './handlers/errors';
 import { initJSBrotliMiddleware } from './middlewares/brotli';
 
 const PORT = env.PORT || 3000;
+const isProduction = !process.argv.includes('--develop');
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -22,25 +23,20 @@ process.on('unhandledRejection', (reason, p) => {
 
 const app = express();
 
-// Проксирование внешних сервисов api для разработки на localhost
-if (process.env.NODE_ENV === 'development') {
-  createProxyMiddleware('/api', {
-    target: 'http://localhost:8080',
-    changeOrigin: true,
-    // Удаляем домен из кук которые устанавливаются через прокси
-    // cookieDomainRewrite: '',
-  });
+if (isProduction) {
+  // перехватываем js и css файлы
+  // и проставляем заголовки для браузера чтобы брал файлы с расширением .br
+  initJSBrotliMiddleware(app);
+} else {
+  // Проксирование внешних сервисов api для разработки
+  setupProxy();
 }
-
-// перехватываем js и css файлы
-// и проставляем заголовки для браузера чтобы брал файлы с расширением .br
-initJSBrotliMiddleware(app);
 
 // Путь до статики
 app.use(
   '/static',
   express.static(path.resolve(__dirname, 'public'), {
-    maxAge: '30d',
+    maxAge: isProduction ? '30d' : '1ms',
   }),
 );
 
