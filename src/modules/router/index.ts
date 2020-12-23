@@ -9,7 +9,7 @@ import { getRouteActionResult } from './dependencies/get-route-action-result';
 import { cloneRoutes } from './_utils';
 import { IAdvancedRoute } from './_types';
 
-export const configureRouter = (): Router => {
+export const configureRouter = (store?: any): Router => {
   const routes = cloneRoutes(allRoutes as IAdvancedRoute[]);
 
   const router = createRouter(routes, {
@@ -26,6 +26,7 @@ export const configureRouter = (): Router => {
     routes,
     getSegmentActionResult: getSegmentActionResult(router),
     getRouteActionResult: getRouteActionResult(router),
+    store,
   });
 
   // Plugins

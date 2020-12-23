@@ -17,13 +17,13 @@ export const actionHandler = (router: Router): Middleware => async (
   toState: State,
   fromState: State,
 ): Promise<any> => {
-  const { routes, redux, cookies, i18n } = router.getDependencies();
+  const { routes, store, cookies, i18n } = router.getDependencies();
 
   const actionParams: IActionParams = {
     router,
     toState,
     fromState,
-    redux,
+    store,
     cookies,
     i18n,
   };
@@ -54,7 +54,7 @@ export const actionHandler = (router: Router): Middleware => async (
           if (typeof route.loadAction === 'function') {
             actionPromise = new Promise((resolveActionLoad) => {
               route
-                .loadAction(redux)
+                .loadAction(store)
                 .catch((err) => {
                   // Если не удалось загрузить чанк переходим на url напрямую
                   // Кейс возможен при выкатке новой версии когда имена чанков меняются

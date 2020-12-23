@@ -67,7 +67,7 @@ export interface IRouterDependecies {
     locale: string;
     instance: i18nInstance;
   };
-  redux: IAdvancedStore;
+  store: IAdvancedStore;
   cookies: ICookies;
   // Только для сервера
   getChunks?: (name: string) => string[];

@@ -68,7 +68,7 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
   try {
     // startActions(store).then(() => {
     // Router
-    const router = configureRouter();
+    const router = configureRouter(store);
     router.setDependencies({
       store,
       cookies,

@@ -36,6 +36,7 @@
     "react-router5": "8.0.1",
     "regenerator-runtime": "0.13.5",
     "router5": "8.0.1",
+    "react-transition-group": "4.4.1",
     "router5-helpers": "8.0.0",
     "router5-plugin-browser": "8.0.1",
     "router5-plugin-logger": "8.0.1",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "8.2.0",
+    "@types/react-transition-group": "4.2.3",
     "@types/classnames": "2.2.10",
     "@types/express": "4.17.6",
     "@types/history": "4.7.5",
