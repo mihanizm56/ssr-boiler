@@ -3,11 +3,12 @@ import { I18NextRequest } from 'i18next-express-middleware';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { cloneRouter } from 'router5';
+import { createAppStore } from '@wildberries/redux-core-modules';
+import { ABORT_REQUEST_EVENT_NAME } from '@mihanizm56/fetch-api';
 import { configureRouter } from '@/modules/router';
 import { getChunks } from '@/modules/router/dependencies/server/get-chunks';
 import { getI18nResources } from '@/modules/router/dependencies/server/get-i18n-resources';
 import { IActionResult, IAdvancedRoute } from '@/modules/router/_types';
-import { configureRedux } from '@/modules/redux';
 import { configureCookies } from '@/modules/cookies';
 import { Html, IProps as IHtmlProps } from '@/_components/html';
 import { App } from '@/_components/app';
@@ -31,12 +32,9 @@ export const ssr = async (
     const cookies = configureCookies(req, res);
 
     // Конфигрурирование redux
-    const redux = configureRedux(
-      {},
-      {
-        cookies,
-      },
-    );
+    const store = createAppStore({
+      eventNameToCancelRequests: ABORT_REQUEST_EVENT_NAME,
+    });
 
     // Стартовые экшены для каждого запроса
     // await startActions(store);
@@ -47,7 +45,7 @@ export const ssr = async (
     // Клонирование базового роутера для обработки запроса ???
     const router = cloneRouter(baseRouter, baseRouter.getDependencies());
     router.setDependencies({
-      redux,
+      store,
       cookies,
       i18n: {
         locale,
@@ -126,11 +124,11 @@ export const ssr = async (
       styles: Array.from(styles),
       scripts: Array.from(scripts),
       ssrData: {
-        state: redux.getState(),
+        reduxInitialState: store.getState(),
         i18nData: { locale, resources: routeResources.i18nResources },
       },
       children: ReactDOM.renderToString(
-        <App cookies={cookies} i18n={req.i18n} redux={redux} router={router} />,
+        <App cookies={cookies} i18n={req.i18n} router={router} store={store} />,
       ),
     };
 

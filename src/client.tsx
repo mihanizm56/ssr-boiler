@@ -4,12 +4,14 @@ import 'regenerator-runtime/runtime';
 import deepForceUpdate from 'react-deep-force-update';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
+import { ABORT_REQUEST_EVENT_NAME } from '@mihanizm56/fetch-api';
+import { createAppStore } from '@wildberries/redux-core-modules';
+// import { setModalAction } from '@wildberries/notifications';
 import { configureRouter } from '@/modules/router';
 import { handleRedirect } from '@/modules/router/plugins/client/handle-redirect';
 import { setMeta } from '@/modules/router/plugins/client/set-meta';
 import { i18n } from '@/modules/i18n';
-import { IGlobalState } from '@/modules/redux/_types';
-import { configureRedux } from '@/modules/redux';
+import { GlobalStateType } from '@/_types';
 import { configureCookies } from '@/modules/cookies';
 import { Page as ErrorPage } from '@/pages/error/page';
 import { App } from '@/_components/app';
@@ -38,12 +40,12 @@ if (i18nData && i18nData.resources) {
 const cookies = configureCookies();
 
 // Применение стора вычесленного на сервере
-const initialState: IGlobalState =
-  (customWindow.ssrData && customWindow.ssrData.state) || {};
+const initialState: GlobalStateType =
+  (customWindow.ssrData && customWindow.ssrData.reduxInitialState) || {};
 
-// Конфигрурирование redux
-const redux = configureRedux(initialState, {
-  cookies,
+const store = createAppStore({
+  initialState,
+  eventNameToCancelRequests: ABORT_REQUEST_EVENT_NAME,
 });
 
 // Удаление ssrData из памяти
@@ -68,7 +70,7 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
     // Router
     const router = configureRouter();
     router.setDependencies({
-      redux,
+      store,
       cookies,
       i18n: {
         locale: i18nData.locale,
@@ -86,8 +88,8 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
           }}
           cookies={cookies}
           i18n={i18n}
-          redux={redux}
           router={router}
+          store={store}
         />,
         container,
         () => {

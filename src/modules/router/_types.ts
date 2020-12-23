@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Router, Route, State } from 'router5';
 import { i18n as i18nInstance } from 'i18next';
-import { IAdvancedStore } from '@/modules/redux/_types';
+import { IAdvancedStore } from '@wildberries/redux-core-modules';
 import { ICookies } from '@/modules/cookies/_types';
 
 export interface IAdvancedRoute extends Route {

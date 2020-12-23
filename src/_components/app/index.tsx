@@ -10,8 +10,8 @@ import { CookiesContext } from '@/modules/cookies/_components/cookies-context';
 import { RouteNode } from '@/modules/router/_components/route-node';
 import { Page as ErrorPage } from '@/pages/error/page';
 
-interface IProps extends React.Props<any> {
-  redux: IStore;
+interface IProps {
+  store: IStore;
   cookies: ICookies;
   i18n: typeof II18n;
   router: IRouter;
@@ -31,13 +31,13 @@ export class App extends React.PureComponent<IProps, IState> {
   };
 
   render() {
-    const { redux, cookies, i18n, router } = this.props;
+    const { store, cookies, i18n, router } = this.props;
     const { error } = this.state;
 
     const { routerId } = router.getDependencies();
 
     return (
-      <ReduxProvider store={redux}>
+      <ReduxProvider store={store}>
         <CookiesContext.Provider value={cookies}>
           <I18nextProvider i18n={i18n}>
             <RouterProvider key={routerId} router={router}>

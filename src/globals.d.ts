@@ -51,6 +51,6 @@ interface IWindow extends Window {
       locale: string;
       resources: Record<string, any>[];
     };
-    state: IGlobalState;
+    reduxInitialState: IGlobalState;
   };
 }
