@@ -34,7 +34,11 @@ export const ssr = async (
     // Конфигрурирование redux
     const store = createAppStore({
       eventNameToCancelRequests: ABORT_REQUEST_EVENT_NAME,
+      isSSR: true,
+      manualSagaStart: true,
     });
+
+    const sagaRunner = store.sagaMiddleware.run(store.rootSaga);
 
     // Стартовые экшены для каждого запроса
     // await startActions(store);
@@ -60,6 +64,7 @@ export const ssr = async (
           // Обработка редиректа
           const { redirect } = error.actionResult;
           let redirectUrl = redirect.url;
+
           if (redirect.route && redirect.route.name) {
             redirectUrl = router.buildPath(
               redirect.route.name,
@@ -89,16 +94,16 @@ export const ssr = async (
     };
 
     // Чанки скриптов и стилей для текущего роута
-    const scripts = new Set<string>();
-    const styles = new Set<string>();
+    const scripts: Array<string> = [];
+    const styles: Array<string> = [];
 
     const addChunk = (chunk: string) => {
       if (chunks[chunk]) {
         chunks[chunk].forEach((asset: string) => {
           if (asset.match(/\.js$/g)) {
-            scripts.add(asset);
+            scripts.push(asset);
           } else if (asset.match(/\.css$/g)) {
-            styles.add(asset);
+            styles.push(asset);
           }
         });
       } else if (__DEV__) {
@@ -106,35 +111,52 @@ export const ssr = async (
       }
     };
 
+    // начинаем набивку чанков стилей и скриптов
     addChunk('client');
 
     if (routeResources.chunks) {
       routeResources.chunks.forEach(addChunk);
     }
 
-    // Данные для отрисовки html страницы
-    const data: IHtmlProps = {
-      title: routeActionResult.title || req.i18n.t('common:siteTitle'),
-      description: routeActionResult.description,
-      keywords: routeActionResult.keywords,
-      canonical: routeActionResult.canonical,
-      ogDescription: routeActionResult.ogDescription,
-      ogUrl: routeActionResult.ogUrl,
-      ogImage: routeActionResult.ogImage,
-      styles: Array.from(styles),
-      scripts: Array.from(scripts),
-      ssrData: {
-        reduxInitialState: store.getState(),
-        i18nData: { locale, resources: routeResources.i18nResources },
-      },
-      children: ReactDOM.renderToString(
-        <App cookies={cookies} i18n={req.i18n} router={router} store={store} />,
-      ),
-    };
+    // рендер самого приложения
+    const renderedApp = ReactDOM.renderToString(
+      <App cookies={cookies} i18n={req.i18n} router={router} store={store} />,
+    );
 
-    const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
-    res.status(routeActionResult.status || 200);
-    res.send(`<!doctype html>${html}`);
+    try {
+      // ожидание остановки работы саг
+      sagaRunner.toPromise().then(() => {
+        // данные для проброса на клиент
+        const ssrData = {
+          reduxInitialState: store.getState(),
+          i18nData: { locale, resources: routeResources.i18nResources },
+        };
+
+        // Данные для отрисовки html страницы
+        const data: IHtmlProps = {
+          title: routeActionResult.title || req.i18n.t('common:siteTitle'),
+          description: routeActionResult.description,
+          keywords: routeActionResult.keywords,
+          canonical: routeActionResult.canonical,
+          ogDescription: routeActionResult.ogDescription,
+          ogUrl: routeActionResult.ogUrl,
+          ogImage: routeActionResult.ogImage,
+          styles,
+          scripts,
+          children: renderedApp,
+          ssrData,
+        };
+
+        const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
+
+        res.status(routeActionResult.status || 200);
+        res.send(`<!doctype html>${html}`);
+      });
+
+      store.closeSagas();
+    } catch (error) {
+      next(error);
+    }
   } catch (err) {
     next(err);
   }

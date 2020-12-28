@@ -35,7 +35,7 @@ interface IOptions {
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-const serialize = (obj: object, options: IOptions = {}): string => {
+export const serialize = (obj: object, options: IOptions = {}): string => {
   // Backwards-compatibility for `space` as the second argument.
   if (typeof options === 'number' || typeof options === 'string') {
     options = { space: options }; // eslint-disable-line no-param-reassign
@@ -185,5 +185,3 @@ const serialize = (obj: object, options: IOptions = {}): string => {
     return serializeFunc(fn);
   });
 };
-
-export { serialize };

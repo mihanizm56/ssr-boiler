@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { RouteNode } from '@/modules/router/_components/route-node';
 import { MainLayout } from '@/layouts/main-layout';
 import { Page } from './page';

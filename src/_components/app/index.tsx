@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Store as IStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import II18n from 'i18next';

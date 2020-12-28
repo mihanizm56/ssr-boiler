@@ -52,5 +52,9 @@ interface IWindow extends Window {
       resources: Record<string, any>[];
     };
     reduxInitialState: IGlobalState;
+    reduxAsyncReducers: Record<string, any>;
+    reduxAsyncSagas: Record<string, any>;
+    rootReducers: Record<string, any>;
+    rootSagas: Record<string, any>;
   };
 }

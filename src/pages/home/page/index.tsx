@@ -1,4 +1,4 @@
-// import * as React from 'react';
+// import React from 'react';
 // import { useDispatch } from 'react-redux';
 // import { setModalAction } from '@wildberries/notifications';
 // import s from './index.scss';
@@ -18,7 +18,7 @@
 //   );
 // });
 
-import * as React from 'react';
+import React from 'react';
 import s from './index.scss';
 
 export const Page = React.memo(() => {

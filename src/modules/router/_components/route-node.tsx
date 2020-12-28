@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Router, State } from 'router5';
 import { RouteNode as Router5RouteNode } from 'react-router5';
 

@@ -1,12 +1,10 @@
 import 'core-js';
 import 'regenerator-runtime/runtime';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import deepForceUpdate from 'react-deep-force-update';
-import * as React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { ABORT_REQUEST_EVENT_NAME } from '@mihanizm56/fetch-api';
 import { createAppStore } from '@wildberries/redux-core-modules';
-// import { setModalAction } from '@wildberries/notifications';
 import { configureRouter } from '@/modules/router';
 import { handleRedirect } from '@/modules/router/plugins/client/handle-redirect';
 import { setMeta } from '@/modules/router/plugins/client/set-meta';
@@ -36,7 +34,7 @@ if (i18nData && i18nData.resources) {
   }
 }
 
-// Конфигрурирование cookies
+// Конфигурирование cookies
 const cookies = configureCookies();
 
 // Применение стора вычесленного на сервере
@@ -46,6 +44,7 @@ const initialState: GlobalStateType =
 const store = createAppStore({
   initialState,
   eventNameToCancelRequests: ABORT_REQUEST_EVENT_NAME,
+  isSSR: true,
 });
 
 // Удаление ssrData из памяти

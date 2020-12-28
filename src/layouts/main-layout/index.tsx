@@ -10,6 +10,8 @@ export const MainLayout = React.memo(({ children }: Props<any>) => (
       <ConnectedLink routeName="page1">Page 1</ConnectedLink>
       <br />
       <ConnectedLink routeName="page2">Page 2</ConnectedLink>
+      <br />
+      <ConnectedLink routeName="test-page">Test Page</ConnectedLink>
     </nav>
     <div className={s.content}>{children}</div>
   </div>

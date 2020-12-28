@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { ICookies } from '../_types';
 import { CookiesContext } from './cookies-context';
 
