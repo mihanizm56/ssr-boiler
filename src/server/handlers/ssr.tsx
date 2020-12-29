@@ -10,7 +10,7 @@ import { getChunks } from '@/modules/router/dependencies/server/get-chunks';
 import { getI18nResources } from '@/modules/router/dependencies/server/get-i18n-resources';
 import { IActionResult, IAdvancedRoute } from '@/modules/router/_types';
 import { configureCookies } from '@/modules/cookies';
-import { Html, IProps as IHtmlProps } from '@/_components/html';
+import { Html, PropsType as IHtmlProps } from '@/_components/html';
 import { App } from '@/_components/app';
 // Файл chunk-manifest.json генерируется при сборке и позволяет мапить чанки для сервера и клиента по роутам
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved

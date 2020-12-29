@@ -12,9 +12,10 @@
   "dependencies": {
     "@babel/node": "7.8.7",
     "@babel/runtime": "7.9.6",
-    "@mihanizm56/fetch-api": "3.5.0-beta.2",
-    "@wildberries/redux-core-modules": "0.3.0-beta.4",
+    "@mihanizm56/fetch-api": "3.5.0-beta.4",
+    "@wildberries/redux-core-modules": "0.3.0-beta.5",
     "body-parser": "1.19.0",
+    "cache-loader": "^4.1.0",
     "classnames": "2.2.5",
     "cookie-universal": "2.1.4",
     "core-js": "3.6.5",
@@ -44,6 +45,7 @@
     "router5-transition-path": "8.0.1",
     "serialize-javascript": "^5.0.1",
     "ssr-scripts": "git+https://github.com/mihanizm56/ssr-config.git",
+    "thread-loader": "^3.0.1",
     "typescript": "3.9.3"
   },
   "devDependencies": {

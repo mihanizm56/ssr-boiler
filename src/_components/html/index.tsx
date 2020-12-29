@@ -2,7 +2,7 @@ import * as React from 'react';
 import { availableEnvKeys } from '@/available-env-keys';
 import { serialize } from '@/_utils/serialize';
 
-export interface IProps extends React.Props<any> {
+export type PropsType = React.Props<any> & {
   req?: any;
   title: string;
   description?: string;
@@ -15,7 +15,7 @@ export interface IProps extends React.Props<any> {
   scripts?: string[];
   ssrData?: Record<string, any>;
   children?: string;
-}
+};
 
 export const Html = ({
   title,
@@ -29,7 +29,7 @@ export const Html = ({
   scripts,
   ssrData,
   children,
-}: IProps) => (
+}: PropsType) => (
   <html>
     <head>
       <meta charSet="utf-8" />
@@ -69,11 +69,6 @@ export const Html = ({
       ))}
     </head>
     <body>
-      <div
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: children }}
-        id="app"
-      />
       <script
         // env переменные доступные на клиенте ??? (оптимизировать)
         // eslint-disable-next-line react/no-danger
@@ -93,6 +88,12 @@ export const Html = ({
         dangerouslySetInnerHTML={{
           __html: `window.ssrData = ${serialize(ssrData)};`,
         }}
+      />
+
+      <div
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: children }}
+        id="app"
       />
       {scripts.map((script) => (
         <script key={script} src={script} />

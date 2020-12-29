@@ -8,7 +8,8 @@ import { RouterProvider } from 'react-router5';
 import { ICookies } from '@/modules/cookies/_types';
 import { CookiesContext } from '@/modules/cookies/_components/cookies-context';
 import { RouteNode } from '@/modules/router/_components/route-node';
-import { Page as ErrorPage } from '@/pages/error/page';
+import { RootComponents } from '../root-components';
+import { ErrorBoundary } from '../error-boundary';
 
 interface IProps {
   store: IStore;
@@ -22,34 +23,25 @@ interface IState {
 }
 
 export class App extends React.PureComponent<IProps, IState> {
-  static getDerivedStateFromError(error: Error): { error: Error } {
-    return { error };
-  }
-
-  state = {
-    error: null,
-  };
-
   render() {
-    const { store, cookies, i18n, router } = this.props;
-    const { error } = this.state;
-
-    const { routerId } = router.getDependencies();
+    const { routerId } = this.props.router.getDependencies();
 
     return (
-      <ReduxProvider store={store}>
-        <CookiesContext.Provider value={cookies}>
-          <I18nextProvider i18n={i18n}>
-            <RouterProvider key={routerId} router={router}>
-              {error ? (
-                <ErrorPage />
-              ) : (
-                <RouteNode nodeName="">{({ content }) => content}</RouteNode>
-              )}
-            </RouterProvider>
-          </I18nextProvider>
-        </CookiesContext.Provider>
-      </ReduxProvider>
+      <>
+        <ErrorBoundary>
+          <ReduxProvider store={this.props.store}>
+            <CookiesContext.Provider value={this.props.cookies}>
+              <I18nextProvider i18n={this.props.i18n}>
+                <RouterProvider key={routerId} router={this.props.router}>
+                  <RouteNode nodeName="">{({ content }) => content}</RouteNode>
+                </RouterProvider>
+              </I18nextProvider>
+            </CookiesContext.Provider>
+          </ReduxProvider>
+
+          <RootComponents />
+        </ErrorBoundary>
+      </>
     );
   }
 }

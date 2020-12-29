@@ -5,6 +5,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ABORT_REQUEST_EVENT_NAME } from '@mihanizm56/fetch-api';
 import { createAppStore } from '@wildberries/redux-core-modules';
+// import {
+//   notificationsState,
+//   NOTIFICATIONS_REDUCER_NAME,
+//   setModalAction,
+// } from '@wildberries/notifications';
 import { configureRouter } from '@/modules/router';
 import { handleRedirect } from '@/modules/router/plugins/client/handle-redirect';
 import { setMeta } from '@/modules/router/plugins/client/set-meta';
@@ -45,6 +50,10 @@ const store = createAppStore({
   initialState,
   eventNameToCancelRequests: ABORT_REQUEST_EVENT_NAME,
   isSSR: true,
+  // rootReducers: {
+  //   [NOTIFICATIONS_REDUCER_NAME]: notificationsState,
+  // },
+  // dependencies: { setModalAction },
 });
 
 // Удаление ssrData из памяти
