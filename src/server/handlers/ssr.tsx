@@ -118,20 +118,9 @@ export const ssr = async (
       routeResources.chunks.forEach(addChunk);
     }
 
-    // рендер самого приложения
-    const renderedApp = ReactDOM.renderToString(
-      <App cookies={cookies} i18n={req.i18n} router={router} store={store} />,
-    );
-
     try {
       // ожидание остановки работы саг
       sagaRunner.toPromise().then(() => {
-        // данные для проброса на клиент
-        const ssrData = {
-          reduxInitialState: store.getState(),
-          i18nData: { locale, resources: routeResources.i18nResources },
-        };
-
         // Данные для отрисовки html страницы
         const data: IHtmlProps = {
           title: routeActionResult.title || req.i18n.t('common:siteTitle'),
@@ -143,8 +132,20 @@ export const ssr = async (
           ogImage: routeActionResult.ogImage,
           styles,
           scripts,
-          children: renderedApp,
-          ssrData,
+          // рендер самого приложения
+          children: ReactDOM.renderToString(
+            <App
+              cookies={cookies}
+              i18n={req.i18n}
+              router={router}
+              store={store}
+            />,
+          ),
+          // данные для проброса на клиент
+          ssrData: {
+            reduxInitialState: store.getState(),
+            i18nData: { locale, resources: routeResources.i18nResources },
+          },
         };
 
         const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);

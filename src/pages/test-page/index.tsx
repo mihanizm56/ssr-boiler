@@ -8,10 +8,11 @@ const pageNode = 'test-page';
 
 const action = async ({ i18n, fromState, toState, store }) => ({
   title: i18n.instance.t('test-page.title'),
+  storeInjectConfig,
   content: (
     <ReduxStoreLoader
       fromState={fromState}
-      storeInjectConfig={storeInjectConfig(store)}
+      storeInjectConfig={storeInjectConfig}
       toState={toState}
     >
       <RouteNode nodeName={pageNode}>{() => <Page />}</RouteNode>

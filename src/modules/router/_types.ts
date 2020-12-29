@@ -1,7 +1,10 @@
 import React from 'react';
 import { Router, Route, State } from 'router5';
 import { i18n as i18nInstance } from 'i18next';
-import { IAdvancedStore } from '@wildberries/redux-core-modules';
+import {
+  IAdvancedStore,
+  StoreInjectConfig,
+} from '@wildberries/redux-core-modules';
 import { ICookies } from '@/modules/cookies/_types';
 
 export interface IAdvancedRoute extends Route {
@@ -32,6 +35,7 @@ export interface IActionResult {
   content?: React.ReactNode;
   useCache?: boolean;
   status?: number;
+  storeInjectConfig?: StoreInjectConfig;
   redirect?: {
     url?: string;
     route?: {
