@@ -1,32 +1,14 @@
-import createRouter, { Middleware, Router } from 'router5';
+import createRouter, { Router } from 'router5';
 import loggerPlugin from 'router5-plugin-logger';
 import browserPlugin from 'router5-plugin-browser';
-import { runInjectorConfig } from '@wildberries/redux-core-modules';
 import allRoutes from '@/pages/routes';
 import { actionHandler } from './middlewares/action-handler';
 import { i18nLoader } from './middlewares/i18n-loader';
 import { getSegmentActionResult } from './dependencies/get-segment-action-result';
 import { getRouteActionResult } from './dependencies/get-route-action-result';
-import { cloneRoutes, getActivatedRoutes } from './_utils';
+import { cloneRoutes } from './_utils';
 import { IAdvancedRoute } from './_types';
-
-export const SSRReduxPrefetchMiddleware = (
-  router: Router,
-): Middleware => async (toState, fromState) => {
-  const { routes, store } = router.getDependencies();
-
-  const activatedRoutes = getActivatedRoutes(toState, fromState, routes);
-
-  await Promise.all(
-    await activatedRoutes.map(async (routeData: IAdvancedRoute) => {
-      const storeInjectConfig = routeData?.actionResult?.storeInjectConfig; // eslint-disable-line
-
-      if (storeInjectConfig && store) {
-        runInjectorConfig({ store, storeInjectConfig });
-      }
-    }),
-  );
-};
+import { SSRReduxPrefetchMiddleware } from './middlewares/ssr-redux-prefetch-middleware';
 
 export const configureRouter = (store?: any): Router => {
   const routes = cloneRoutes(allRoutes as IAdvancedRoute[]);

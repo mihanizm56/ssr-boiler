@@ -121,6 +121,22 @@ export const ssr = async (
     try {
       // ожидание остановки работы саг
       sagaRunner.toPromise().then(() => {
+        // данные для проброса на клиент
+        const ssrData = {
+          reduxInitialState: store.getState(),
+          i18nData: { locale, resources: routeResources.i18nResources },
+        };
+
+        // рендер самого приложения
+        const renderedApp = ReactDOM.renderToString(
+          <App
+            cookies={cookies}
+            i18n={req.i18n}
+            router={router}
+            store={store}
+          />,
+        );
+
         // Данные для отрисовки html страницы
         const data: IHtmlProps = {
           title: routeActionResult.title || req.i18n.t('common:siteTitle'),
@@ -133,19 +149,9 @@ export const ssr = async (
           styles,
           scripts,
           // рендер самого приложения
-          children: ReactDOM.renderToString(
-            <App
-              cookies={cookies}
-              i18n={req.i18n}
-              router={router}
-              store={store}
-            />,
-          ),
+          children: renderedApp,
           // данные для проброса на клиент
-          ssrData: {
-            reduxInitialState: store.getState(),
-            i18nData: { locale, resources: routeResources.i18nResources },
-          },
+          ssrData,
         };
 
         const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
