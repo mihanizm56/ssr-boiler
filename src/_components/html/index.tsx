@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { availableEnvKeys } from '@/available-env-keys';
 import { serialize } from '@/_utils/serialize';
 

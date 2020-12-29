@@ -148,9 +148,7 @@ export const ssr = async (
           ogImage: routeActionResult.ogImage,
           styles,
           scripts,
-          // рендер самого приложения
           children: renderedApp,
-          // данные для проброса на клиент
           ssrData,
         };
 
