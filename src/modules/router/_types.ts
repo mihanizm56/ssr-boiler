@@ -6,6 +6,10 @@ import {
 } from '@wildberries/redux-core-modules';
 import { ICookies } from '@/modules/cookies/_types';
 
+type i18nConfigType = {
+  namespaces: Array<string>;
+};
+
 export interface IAdvancedRoute extends Route {
   action?: IAction;
   loadAction?: (redux: IAdvancedStore) => Promise<{ default: IAction }>;
@@ -13,6 +17,7 @@ export interface IAdvancedRoute extends Route {
   canParallel?: boolean;
   children?: IAdvancedRoute[];
   actionResult?: IActionResult;
+  i18n?: i18nConfigType;
 }
 
 type RouterDependeciesOptionalType = Partial<IRouterDependecies>;

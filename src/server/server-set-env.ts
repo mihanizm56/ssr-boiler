@@ -4,7 +4,7 @@ import { availableEnvKeys } from '../available-env-keys';
 
 // Установка переменных окружения в process.env для сервера
 dotenv.config({
-  path: path.resolve(__dirname, `${__DEV__ ? '../' : './'}.env.defaults`),
+  path: path.resolve(__dirname, `${__DEV__ ? '../' : './'}.env`),
 });
 
 // env переменные доступные на сервере

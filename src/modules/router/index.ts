@@ -7,6 +7,7 @@ import { getSegmentActionResult } from './dependencies/get-segment-action-result
 import { getRouteActionResult } from './dependencies/get-route-action-result';
 import { cloneRoutes } from './_utils';
 import { IAdvancedRoute } from './_types';
+import { i18nextLoader } from './middlewares/i18next-loader';
 import { SSRReduxPrefetchMiddleware } from './middlewares/ssr-redux-prefetch-middleware';
 
 export const configureRouter = (store?: any): Router => {
@@ -36,6 +37,7 @@ export const configureRouter = (store?: any): Router => {
   }
 
   // Middlewares
+  router.useMiddleware(i18nextLoader);
   router.useMiddleware(actionHandler);
   router.useMiddleware(SSRReduxPrefetchMiddleware);
 

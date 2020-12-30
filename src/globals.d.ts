@@ -48,9 +48,9 @@ declare const env: Record<string, string>;
 interface IWindow extends Window {
   ssrData?: {
     reduxInitialState: IGlobalState;
-    reduxAsyncReducers: Record<string, any>;
-    reduxAsyncSagas: Record<string, any>;
-    rootReducers: Record<string, any>;
-    rootSagas: Record<string, any>;
+    i18nData: {
+      locale: string;
+      translations: Record<string, string | Record<string, string>>;
+    };
   };
 }

@@ -4,5 +4,7 @@ export default {
   loadAction: () => import(/* webpackChunkName: 'page2' */ './index'),
   canParallel: true,
   chunks: ['page2'],
-  translations: ['page2'],
+  i18n: {
+    namespaces: ['page-2'],
+  },
 };

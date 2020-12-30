@@ -10,6 +10,8 @@ import { createAppStore } from '@wildberries/redux-core-modules';
 //   NOTIFICATIONS_REDUCER_NAME,
 //   setModalAction,
 // } from '@wildberries/notifications';
+import i18next from 'i18next';
+import { geti18NextSync, i18nextRequest } from '@wildberries/i18next-utils';
 import { configureRouter } from '@/modules/router';
 import { handleRedirect } from '@/modules/router/plugins/client/handle-redirect';
 import { setMeta } from '@/modules/router/plugins/client/set-meta';
@@ -20,23 +22,34 @@ import { App } from '@/_components/app';
 
 const customWindow = window as IWindow;
 
+const initI18Next = ({ locale, translations }: any) => {
+  try {
+    const namespacesData = translations ? Object.keys(translations) : [];
+
+    geti18NextSync({ locale });
+
+    i18next.changeLanguage(locale);
+
+    if (i18nData && i18nData.translations && namespacesData.length) {
+      namespacesData.forEach((namespace) => {
+        i18next.addResourceBundle(
+          locale,
+          namespace,
+          i18nData.translations[namespace],
+        );
+      });
+    }
+  } catch (error) {
+    console.error('error then initialize i18next', error);
+  }
+};
+
 // Применение переводов полученных на сервере
-// const { i18nData } = customWindow.ssrData;
-// const locale = (i18nData && i18nData.locale) || 'ru'; // ru – default locale
-// i18n.changeLanguage(locale);
-// if (i18nData && i18nData.resources) {
-//   const translations = Object.keys(i18nData.resources);
-//   if (translations.length > 0) {
-//     translations.forEach((translation) => {
-//       i18n.addResourceBundle(
-//         i18nData.locale,
-//         translation,
-//         i18nData.resources[translation],
-//         true,
-//       );
-//     });
-//   }
-// }
+const { i18nData } = customWindow.ssrData;
+
+const locale = (i18nData && i18nData.locale) || 'ru'; // ru – default locale
+
+initI18Next({ locale, translations: i18nData.translations });
 
 // Конфигурирование cookies
 const cookies = configureCookies();
@@ -71,6 +84,10 @@ const container = document.getElementById('app');
 // Экземпляр приложения
 let appInstance;
 
+// eslint-disable-next-line
+    const getI18nextRequestEndpoint = ({ locale, namespace }: any) =>
+  `/I18N/${namespace}/${locale}`;
+
 const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
   try {
     // startActions(store).then(() => {
@@ -79,6 +96,14 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
     router.setDependencies({
       store,
       cookies,
+      i18nextConfig: {
+        getLocale: () => 'ru',
+        i18next,
+        i18nextRequest: (options) => i18nextRequest(options),
+        createEndpoint: getI18nextRequestEndpoint,
+        formatterResponseData: (data: { translate: Record<string, any> }) =>
+          data.translate,
+      },
     });
     router.usePlugin(handleRedirect);
     router.usePlugin(setMeta);
