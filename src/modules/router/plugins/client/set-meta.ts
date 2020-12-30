@@ -4,15 +4,17 @@ import { IRouterDependecies } from '../../_types';
 
 export const setMeta = (
   router: Router,
-  { getRouteActionResult, i18n }: IRouterDependecies,
+  { getRouteActionResult }: IRouterDependecies,
 ): Plugin => ({
   onTransitionSuccess: (toState: State): void => {
     const routeActionResult = getRouteActionResult(toState.name);
 
-    const title =
-      routeActionResult.title ||
-      (i18n && i18n.instance && i18n.instance.t('common:siteTitle')) ||
-      'Wildberries';
+    // const title =
+    //   routeActionResult.title ||
+    //   (i18n && i18n.instance &&  'common:siteTitle')) ||
+    //   'Wildberries';
+
+    const title = routeActionResult.title || 'boilerplate';
 
     document.title = title;
 

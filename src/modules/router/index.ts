@@ -3,7 +3,6 @@ import loggerPlugin from 'router5-plugin-logger';
 import browserPlugin from 'router5-plugin-browser';
 import allRoutes from '@/pages/routes';
 import { actionHandler } from './middlewares/action-handler';
-import { i18nLoader } from './middlewares/i18n-loader';
 import { getSegmentActionResult } from './dependencies/get-segment-action-result';
 import { getRouteActionResult } from './dependencies/get-route-action-result';
 import { cloneRoutes } from './_utils';
@@ -37,7 +36,6 @@ export const configureRouter = (store?: any): Router => {
   }
 
   // Middlewares
-  router.useMiddleware(i18nLoader);
   router.useMiddleware(actionHandler);
   router.useMiddleware(SSRReduxPrefetchMiddleware);
 

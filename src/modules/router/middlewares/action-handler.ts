@@ -17,7 +17,7 @@ export const actionHandler = (router: Router): Middleware => async (
   toState: State,
   fromState: State,
 ): Promise<any> => {
-  const { routes, store, cookies, i18n } = router.getDependencies();
+  const { routes, store, cookies } = router.getDependencies();
 
   const actionParams: IActionParams = {
     router,
@@ -25,7 +25,6 @@ export const actionHandler = (router: Router): Middleware => async (
     fromState,
     store,
     cookies,
-    i18n,
   };
 
   let parentError = null;

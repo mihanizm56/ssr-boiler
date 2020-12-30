@@ -5,8 +5,8 @@ import { Page } from './page';
 
 const pageNode = 'not-found';
 
-const action = async ({ i18n }) => ({
-  title: i18n.instance.t('not-found:title'),
+const action = async () => ({
+  title: 'not-found',
   status: 404,
   content: (
     <MainLayout>

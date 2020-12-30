@@ -6,8 +6,6 @@ import './server-set-env';
 import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
-import i18nextExpressMiddleware from 'i18next-express-middleware';
-import { i18n } from '@/modules/i18n';
 import { setupProxy } from './proxy';
 import { ssr } from './handlers/ssr';
 import { errors } from './handlers/errors';
@@ -42,13 +40,6 @@ app.use(
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-// i18n
-app.use(
-  i18nextExpressMiddleware.handle(i18n, {
-    removeLngFromUrl: false,
-  }),
-);
 
 // Обработка запросов ssr
 app.get('*', ssr);

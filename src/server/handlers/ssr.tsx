@@ -1,5 +1,4 @@
-import { Response, NextFunction } from 'express';
-import { I18NextRequest } from 'i18next-express-middleware';
+import { Response, NextFunction, Request } from 'express';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { cloneRouter } from 'router5';
@@ -7,7 +6,6 @@ import { createAppStore } from '@wildberries/redux-core-modules';
 import { ABORT_REQUEST_EVENT_NAME } from '@mihanizm56/fetch-api';
 import { configureRouter } from '@/modules/router';
 import { getChunks } from '@/modules/router/dependencies/server/get-chunks';
-import { getI18nResources } from '@/modules/router/dependencies/server/get-i18n-resources';
 import { IActionResult, IAdvancedRoute } from '@/modules/router/_types';
 import { configureCookies } from '@/modules/cookies';
 import { Html, PropsType as IHtmlProps } from '@/_components/html';
@@ -19,14 +17,9 @@ import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unr
 const baseRouter = configureRouter();
 baseRouter.setDependencies({
   getChunks: getChunks(baseRouter),
-  getI18nResources: getI18nResources(baseRouter),
 });
 
-export const ssr = async (
-  req: I18NextRequest,
-  res: Response,
-  next: NextFunction,
-) => {
+export const ssr = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Конфигрурирование cookies
     const cookies = configureCookies(req, res);
@@ -51,15 +44,11 @@ export const ssr = async (
     router.setDependencies({
       store,
       cookies,
-      i18n: {
-        locale,
-        instance: req.i18n,
-      },
     });
 
     // Обработка пути с router5
     const route: IAdvancedRoute = await new Promise((resolve, reject) => {
-      router.start(req.originalUrl, (error, state) => {
+      router.start(req.url, (error, state) => {
         if (error && error.actionResult && error.actionResult.redirect) {
           // Обработка редиректа
           const { redirect } = error.actionResult;
@@ -90,7 +79,6 @@ export const ssr = async (
     // Загрузка чанков и локализации для текущего роута
     const routeResources = {
       chunks: routerDeps.getChunks(route.name),
-      i18nResources: routerDeps.getI18nResources(route.name),
     };
 
     // Чанки скриптов и стилей для текущего роута
@@ -124,22 +112,17 @@ export const ssr = async (
         // данные для проброса на клиент
         const ssrData = {
           reduxInitialState: store.getState(),
-          i18nData: { locale, resources: routeResources.i18nResources },
+          // i18nData: { locale, resources: routeResources.i18nResources },
         };
 
         // рендер самого приложения
         const renderedApp = ReactDOM.renderToString(
-          <App
-            cookies={cookies}
-            i18n={req.i18n}
-            router={router}
-            store={store}
-          />,
+          <App cookies={cookies} router={router} store={store} />,
         );
 
         // Данные для отрисовки html страницы
         const data: IHtmlProps = {
-          title: routeActionResult.title || req.i18n.t('common:siteTitle'),
+          title: routeActionResult.title,
           description: routeActionResult.description,
           keywords: routeActionResult.keywords,
           canonical: routeActionResult.canonical,

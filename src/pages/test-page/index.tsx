@@ -6,8 +6,8 @@ import { storeInjectConfig } from './store-inject-config';
 
 const pageNode = 'test-page';
 
-const action = async ({ i18n, fromState, toState, store }) => ({
-  title: i18n.instance.t('test-page.title'),
+const action = async ({ fromState, toState }) => ({
+  title: 'test-page.title',
   storeInjectConfig,
   content: (
     <ReduxStoreLoader

@@ -13,7 +13,6 @@ import { createAppStore } from '@wildberries/redux-core-modules';
 import { configureRouter } from '@/modules/router';
 import { handleRedirect } from '@/modules/router/plugins/client/handle-redirect';
 import { setMeta } from '@/modules/router/plugins/client/set-meta';
-import { i18n } from '@/modules/i18n';
 import { GlobalStateType } from '@/_types';
 import { configureCookies } from '@/modules/cookies';
 import { Page as ErrorPage } from '@/pages/error/page';
@@ -22,22 +21,22 @@ import { App } from '@/_components/app';
 const customWindow = window as IWindow;
 
 // Применение переводов полученных на сервере
-const { i18nData } = customWindow.ssrData;
-const locale = (i18nData && i18nData.locale) || 'ru'; // ru – default locale
-i18n.changeLanguage(locale);
-if (i18nData && i18nData.resources) {
-  const translations = Object.keys(i18nData.resources);
-  if (translations.length > 0) {
-    translations.forEach((translation) => {
-      i18n.addResourceBundle(
-        i18nData.locale,
-        translation,
-        i18nData.resources[translation],
-        true,
-      );
-    });
-  }
-}
+// const { i18nData } = customWindow.ssrData;
+// const locale = (i18nData && i18nData.locale) || 'ru'; // ru – default locale
+// i18n.changeLanguage(locale);
+// if (i18nData && i18nData.resources) {
+//   const translations = Object.keys(i18nData.resources);
+//   if (translations.length > 0) {
+//     translations.forEach((translation) => {
+//       i18n.addResourceBundle(
+//         i18nData.locale,
+//         translation,
+//         i18nData.resources[translation],
+//         true,
+//       );
+//     });
+//   }
+// }
 
 // Конфигурирование cookies
 const cookies = configureCookies();
@@ -80,10 +79,6 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
     router.setDependencies({
       store,
       cookies,
-      i18n: {
-        locale: i18nData.locale,
-        instance: i18n,
-      },
     });
     router.usePlugin(handleRedirect);
     router.usePlugin(setMeta);
@@ -95,7 +90,6 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
             appInstance = node;
           }}
           cookies={cookies}
-          i18n={i18n}
           router={router}
           store={store}
         />,

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Router, Route, State } from 'router5';
-import { i18n as i18nInstance } from 'i18next';
 import {
   IAdvancedStore,
   StoreInjectConfig,
@@ -11,10 +10,8 @@ export interface IAdvancedRoute extends Route {
   action?: IAction;
   loadAction?: (redux: IAdvancedStore) => Promise<{ default: IAction }>;
   chunks?: string[];
-  translations?: string[];
   canParallel?: boolean;
   children?: IAdvancedRoute[];
-  i18nResources?: Record<string, any>;
   actionResult?: IActionResult;
 }
 
@@ -67,14 +64,9 @@ export interface IRouterDependecies {
   getShowLayoutScrollTop?: (name: string) => IActionResult;
   toState: State;
   fromState: State;
-  i18n: {
-    locale: string;
-    instance: i18nInstance;
-  };
   store: IAdvancedStore;
   cookies: ICookies;
   // Только для сервера
   getChunks?: (name: string) => string[];
-  i18nResources?: (name: string) => string[];
   // Только для клиента
 }

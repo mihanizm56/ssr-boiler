@@ -5,8 +5,8 @@ import { Page } from './page';
 
 const pageNode = 'home';
 
-const action = async ({ i18n }) => ({
-  title: i18n.instance.t('home:title'),
+const action = async () => ({
+  title: 'home:title',
   content: (
     <MainLayout>
       <RouteNode nodeName={pageNode}>
