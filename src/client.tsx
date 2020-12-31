@@ -19,8 +19,10 @@ import { GlobalStateType } from '@/_types';
 import { configureCookies } from '@/modules/cookies';
 import { Page as ErrorPage } from '@/pages/error/page';
 import { App } from '@/_components/app';
-import { getLocaleFromCookies } from './_utils/get-locale-from-cookies';
-import { getI18nextRequestEndpoint } from './_constants/i18next';
+import {
+  getLocaleFromCookies,
+  getI18nextRequestEndpoint,
+} from '@/_constants/i18next';
 
 const customWindow = window as IWindow;
 

@@ -1,8 +1,12 @@
+import { LOCALE_COOKIE } from '@/modules/cookies/_constants';
+
 type ParamsType = {
   locale: string;
   namespace: string;
   baseUrl?: string;
 };
+
+export const DEFAULT_LOCALE = 'ru';
 
 export const getI18nextRequestEndpoint = ({
   locale,
@@ -12,3 +16,6 @@ export const getI18nextRequestEndpoint = ({
   __SERVER__
     ? `${baseUrl}/I18N/${namespace}/${locale}`
     : `/I18N/${namespace}/${locale}`;
+
+export const getLocaleFromCookies = (cookie) =>
+  cookie.get(LOCALE_COOKIE) || DEFAULT_LOCALE;

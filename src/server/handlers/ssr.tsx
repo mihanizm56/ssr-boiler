@@ -6,12 +6,14 @@ import { createAppStore } from '@wildberries/redux-core-modules';
 import { ABORT_REQUEST_EVENT_NAME } from '@mihanizm56/fetch-api';
 import { geti18Next, i18nextRequest } from '@wildberries/i18next-utils';
 import i18next from 'i18next';
-import { getI18nextRequestEndpoint } from '@/_constants/i18next';
+import {
+  getI18nextRequestEndpoint,
+  getLocaleFromCookies,
+} from '@/_constants/i18next';
 import { configureRouter } from '@/modules/router';
 import { getChunks } from '@/modules/router/dependencies/server/get-chunks';
 import { IActionResult, IAdvancedRoute } from '@/modules/router/_types';
 import { configureCookies } from '@/modules/cookies';
-import { getLocaleFromCookies } from '@/_utils/get-locale-from-cookies';
 import { Html, PropsType as IHtmlProps } from '@/_components/html';
 import { App } from '@/_components/app';
 // Файл chunk-manifest.json генерируется при сборке и позволяет мапить чанки для сервера и клиента по роутам

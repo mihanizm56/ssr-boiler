@@ -1,6 +1,4 @@
 // Префикс всех кук используемых на проекте
-const prefix = 'V1';
+const prefix = 'BOILERPLATE';
 
-// Примеры имен кук
-export const SOME_COOKIE_NAME_1 = `${prefix}_SOME_COOKIE_NAME_1`;
-export const SOME_COOKIE_NAME_2 = `${prefix}_SOME_COOKIE_NAME_2`;
+export const LOCALE_COOKIE = `${prefix}_locale`;
