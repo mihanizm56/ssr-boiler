@@ -48,7 +48,7 @@ export const ssr = (baseUrl: string) => async (
     // Стартовые экшены для каждого запроса
     // await startActions(store);
 
-    // Клонирование базового роутера для обработки запроса ???
+    // Клонирование базового роутера для обработки запроса
     const router = cloneRouter(baseRouter, baseRouter.getDependencies());
     router.setDependencies({
       store,
