@@ -6,10 +6,12 @@ import { createAppStore } from '@wildberries/redux-core-modules';
 import { ABORT_REQUEST_EVENT_NAME } from '@mihanizm56/fetch-api';
 import { geti18Next, i18nextRequest } from '@wildberries/i18next-utils';
 import i18next from 'i18next';
+import { getI18nextRequestEndpoint } from '@/_constants/i18next';
 import { configureRouter } from '@/modules/router';
 import { getChunks } from '@/modules/router/dependencies/server/get-chunks';
 import { IActionResult, IAdvancedRoute } from '@/modules/router/_types';
 import { configureCookies } from '@/modules/cookies';
+import { getLocaleFromCookies } from '@/_utils/get-locale-from-cookies';
 import { Html, PropsType as IHtmlProps } from '@/_components/html';
 import { App } from '@/_components/app';
 // Файл chunk-manifest.json генерируется при сборке и позволяет мапить чанки для сервера и клиента по роутам
@@ -21,9 +23,6 @@ baseRouter.setDependencies({
   getChunks: getChunks(baseRouter),
 });
 
-// ru – i18n локаль по умолчанию
-const locale = 'ru';
-
 export const ssr = (baseUrl: string) => async (
   req: Request,
   res: Response,
@@ -32,6 +31,8 @@ export const ssr = (baseUrl: string) => async (
   try {
     // Конфигрурирование cookies
     const cookies = configureCookies(req, res);
+
+    const currentLocale = getLocaleFromCookies(cookies);
 
     // Конфигрурирование redux
     const store = createAppStore({
@@ -45,27 +46,24 @@ export const ssr = (baseUrl: string) => async (
     // Стартовые экшены для каждого запроса
     // await startActions(store);
 
-    // eslint-disable-next-line
-    const getI18nextRequestEndpoint = ({ locale, namespace }: any) =>
-      `${baseUrl}/I18N/${namespace}/${locale}`;
-
     // Клонирование базового роутера для обработки запроса ???
     const router = cloneRouter(baseRouter, baseRouter.getDependencies());
     router.setDependencies({
       store,
       cookies,
       i18nextConfig: {
-        getLocale: () => 'ru',
+        getLocale: getLocaleFromCookies.bind(null, cookies),
         i18next,
         i18nextRequest: (options) => i18nextRequest(options),
-        createEndpoint: getI18nextRequestEndpoint,
+        createEndpoint: ({ locale, namespace }) =>
+          getI18nextRequestEndpoint({ baseUrl, locale, namespace }),
         formatterResponseData: (data: { translate: Record<string, any> }) =>
           data.translate,
       },
     });
 
     // Конфигурирование i18next
-    await geti18Next({ locale });
+    await geti18Next({ locale: currentLocale, debug: false });
 
     // Обработка пути с router5
     const route: IAdvancedRoute = await new Promise((resolve, reject) => {
@@ -134,8 +132,8 @@ export const ssr = (baseUrl: string) => async (
         const ssrData = {
           reduxInitialState: store.getState(),
           i18nData: {
-            locale,
-            translations: i18next.getDataByLanguage(locale),
+            locale: currentLocale,
+            translations: i18next.getDataByLanguage(currentLocale),
           },
         };
 

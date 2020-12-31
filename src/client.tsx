@@ -19,6 +19,8 @@ import { GlobalStateType } from '@/_types';
 import { configureCookies } from '@/modules/cookies';
 import { Page as ErrorPage } from '@/pages/error/page';
 import { App } from '@/_components/app';
+import { getLocaleFromCookies } from './_utils/get-locale-from-cookies';
+import { getI18nextRequestEndpoint } from './_constants/i18next';
 
 const customWindow = window as IWindow;
 
@@ -47,9 +49,9 @@ const initI18Next = ({ locale, translations }: any) => {
 // Применение переводов полученных на сервере
 const { i18nData } = customWindow.ssrData;
 
-const locale = (i18nData && i18nData.locale) || 'ru'; // ru – default locale
+const currentLocale = (i18nData && i18nData.locale) || 'ru'; // ru – default locale
 
-initI18Next({ locale, translations: i18nData.translations });
+initI18Next({ locale: currentLocale, translations: i18nData.translations });
 
 // Конфигурирование cookies
 const cookies = configureCookies();
@@ -84,10 +86,6 @@ const container = document.getElementById('app');
 // Экземпляр приложения
 let appInstance;
 
-// eslint-disable-next-line
-    const getI18nextRequestEndpoint = ({ locale, namespace }: any) =>
-  `/I18N/${namespace}/${locale}`;
-
 const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
   try {
     // startActions(store).then(() => {
@@ -97,10 +95,11 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
       store,
       cookies,
       i18nextConfig: {
-        getLocale: () => 'ru',
+        getLocale: getLocaleFromCookies.bind(null, cookies),
         i18next,
         i18nextRequest: (options) => i18nextRequest(options),
-        createEndpoint: getI18nextRequestEndpoint,
+        createEndpoint: ({ locale, namespace }) =>
+          getI18nextRequestEndpoint({ locale, namespace }),
         formatterResponseData: (data: { translate: Record<string, any> }) =>
           data.translate,
       },

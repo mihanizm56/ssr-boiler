@@ -1,3 +1,5 @@
+/* eslint-disable func-names */
+
 export const initJSBrotliMiddleware = (app) => {
   app.get('*.js', function (req, res, next) {
     req.url += '.br';

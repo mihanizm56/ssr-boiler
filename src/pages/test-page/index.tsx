@@ -1,6 +1,8 @@
 import React from 'react';
 import { ReduxStoreLoader } from '@wildberries/redux-core-modules';
 import { RouteNode } from '@/modules/router/_components/route-node';
+import { MainLayout } from '@/layouts/main-layout';
+import { TranslationLayout } from '@/layouts/translation-layout';
 import { Page } from './page';
 import { storeInjectConfig } from './store-inject-config';
 
@@ -15,7 +17,11 @@ const action = async ({ fromState, toState }) => ({
       storeInjectConfig={storeInjectConfig}
       toState={toState}
     >
-      <RouteNode nodeName={pageNode}>{() => <Page />}</RouteNode>
+      <TranslationLayout>
+        <MainLayout>
+          <RouteNode nodeName={pageNode}>{() => <Page />}</RouteNode>
+        </MainLayout>
+      </TranslationLayout>
     </ReduxStoreLoader>
   ),
 });

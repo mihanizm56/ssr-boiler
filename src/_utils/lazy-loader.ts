@@ -21,6 +21,7 @@ export const lazyLoader = (pageName: string) => {
   }
 
   if (pageName === 'test-page') {
+    // eslint-disable-next-line
     import(/* webpackChunkName: 'test-page' */ '@/pages/test-page/index');
   }
 };

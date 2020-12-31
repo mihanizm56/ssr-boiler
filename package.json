@@ -13,7 +13,7 @@
     "@babel/node": "7.8.7",
     "@babel/runtime": "7.9.6",
     "@mihanizm56/fetch-api": "3.5.0-beta.4",
-    "@wildberries/i18next-utils": "0.0.16-beta.1",
+    "@wildberries/i18next-utils": "0.0.16-beta.3",
     "@wildberries/redux-core-modules": "0.3.0-beta.5",
     "body-parser": "1.19.0",
     "classnames": "2.2.5",

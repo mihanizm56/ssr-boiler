@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-const { Listr } = require('listr2');
 const { exec } = require('child_process');
 const { promisify } = require('util');
+const { Listr } = require('listr2');
 
 const asyncExec = promisify(exec);
 
@@ -11,17 +11,13 @@ const runner = async () => {
       {
         title: 'Запуск Eslint and Stylelint',
         task: async () => {
-          await asyncExec(
-            'npm run lint',
-          );
+          await asyncExec('npm run lint');
         },
       },
       {
         title: 'Проверка типизации',
         task: async () => {
-          await asyncExec(
-            'npx tsc',
-          );
+          await asyncExec('npx tsc');
         },
       },
       {

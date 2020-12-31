@@ -36,7 +36,7 @@ setupProxy({ isProduction, baseUrl });
 app.get('/I18N/page-1/ru', (_, res) =>
   res.status(200).json({
     translate: {
-      'test-key': 'test-translate-1',
+      'test-key': 'Пример перевода 1',
     },
   }),
 );
@@ -44,7 +44,23 @@ app.get('/I18N/page-1/ru', (_, res) =>
 app.get('/I18N/page-2/ru', (_, res) =>
   res.status(200).json({
     translate: {
-      'test-key': 'test-translate-2',
+      'test-key': 'Пример перевода 2',
+    },
+  }),
+);
+
+app.get('/I18N/page-1/en', (_, res) =>
+  res.status(200).json({
+    translate: {
+      'test-key': 'Translation example 1',
+    },
+  }),
+);
+
+app.get('/I18N/page-2/en', (_, res) =>
+  res.status(200).json({
+    translate: {
+      'test-key': 'Translation example 2',
     },
   }),
 );
