@@ -16,7 +16,7 @@ import { configureRouter } from '@/modules/router';
 import { handleRedirect } from '@/modules/router/plugins/client/handle-redirect';
 import { setMeta } from '@/modules/router/plugins/client/set-meta';
 import { GlobalStateType } from '@/_types';
-import { configureCookies } from '@/modules/cookies';
+import { configureCookies } from '@/_utils/cookies';
 import { Page as ErrorPage } from '@/pages/error/page';
 import { App } from '@/_components/app';
 import {

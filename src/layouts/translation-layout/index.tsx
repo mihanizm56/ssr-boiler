@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, SyntheticEvent, useCallback } from 'react';
 import classNames from 'classnames/bind';
-import { withCookies } from '@/modules/cookies/_components/with-cookies';
-import { ICookies } from '@/modules/cookies/_types';
+import { withCookies } from '@/_utils/cookies/_components/with-cookies';
+import { ICookies } from '@/_utils/cookies/_types';
 import { isClient } from '@/_utils/is-client';
 import styles from './index.scss';
 

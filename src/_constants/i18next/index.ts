@@ -1,4 +1,4 @@
-import { LOCALE_COOKIE } from '@/modules/cookies/_constants';
+import { LOCALE_COOKIE } from '@/_utils/cookies/_constants';
 
 type ParamsType = {
   locale: string;

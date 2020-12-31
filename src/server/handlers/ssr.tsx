@@ -13,7 +13,7 @@ import {
 import { configureRouter } from '@/modules/router';
 import { getChunks } from '@/modules/router/dependencies/server/get-chunks';
 import { IActionResult, IAdvancedRoute } from '@/modules/router/_types';
-import { configureCookies } from '@/modules/cookies';
+import { configureCookies } from '@/_utils/cookies';
 import { Html, PropsType as IHtmlProps } from '@/_components/html';
 import { App } from '@/_components/app';
 // Файл chunk-manifest.json генерируется при сборке и позволяет мапить чанки для сервера и клиента по роутам

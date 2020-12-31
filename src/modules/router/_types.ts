@@ -4,7 +4,7 @@ import {
   IAdvancedStore,
   StoreInjectConfig,
 } from '@wildberries/redux-core-modules';
-import { ICookies } from '@/modules/cookies/_types';
+import { ICookies } from '@/_utils/cookies/_types';
 
 type i18nConfigType = {
   namespaces: Array<string>;
