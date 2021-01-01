@@ -3,9 +3,9 @@ import { Store as IStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Router as IRouter } from 'router5';
 import { RouterProvider } from 'react-router5';
+import { RouteNode } from '@wildberries/service-router';
 import { ICookies } from '@/_utils/cookies/_types';
 import { CookiesContext } from '@/_utils/cookies/_components/cookies-context';
-import { RouteNode } from '@/modules/router/_components/route-node';
 import { RootComponents } from '../root-components';
 import { ErrorBoundary } from '../error-boundary';
 

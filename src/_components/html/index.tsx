@@ -61,8 +61,10 @@ export const Html = ({
       ))}
       <link href="/static/favicon.ico" rel="shortcut icon" type="image/png" />
       <link
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=cyrillic-ext"
-        rel="stylesheet"
+        as="font"
+        href="/static/fonts/LatoRegular.woff2"
+        rel="preload"
+        type="font/woff2"
       />
       {styles.map((style) => (
         <link key={style} rel="stylesheet" href={style} /> // eslint-disable-line

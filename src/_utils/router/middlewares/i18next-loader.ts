@@ -1,6 +1,8 @@
+import {
+  getActivatedRoutes,
+  IAdvancedRoute,
+} from '@wildberries/service-router';
 import { Router, Middleware } from 'router5';
-import { getActivatedRoutes } from '../_utils';
-import { IAdvancedRoute } from '../_types';
 
 export const i18nextLoader = (router: Router): Middleware => async (
   toState,

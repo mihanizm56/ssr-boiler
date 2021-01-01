@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import { withCookies } from '@/_utils/cookies/_components/with-cookies';
 import { ICookies } from '@/_utils/cookies/_types';
 import { isClient } from '@/_utils/is-client';
+import { LOCALE_COOKIE } from '@/_utils/cookies/_constants';
 import styles from './index.scss';
 
 const BUTTON_NAME = 'button';
@@ -19,7 +20,7 @@ export const WrappedComponent = React.memo(
       (event: SyntheticEvent<HTMLButtonElement>) => {
         const locale = event.currentTarget.getAttribute('data-locale');
 
-        cookies.set('locale', locale);
+        cookies.set(LOCALE_COOKIE, locale);
 
         if (isClient) {
           window.location.reload();

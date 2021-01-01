@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteNode } from '@/modules/router/_components/route-node';
+import { RouteNode } from '@wildberries/service-router';
 import { MainLayout } from '@/layouts/main-layout';
 import { TranslationLayout } from '@/layouts/translation-layout';
 import { Page } from './page';

@@ -1,7 +1,9 @@
 import { Middleware, Router } from 'router5';
 import { runInjectorConfig } from '@wildberries/redux-core-modules';
-import { getActivatedRoutes } from '../_utils';
-import { IAdvancedRoute } from '../_types';
+import {
+  IAdvancedRoute,
+  getActivatedRoutes,
+} from '@wildberries/service-router';
 
 export const SSRReduxPrefetchMiddleware = (
   router: Router,

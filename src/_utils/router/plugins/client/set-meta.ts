@@ -1,11 +1,11 @@
 import { Router, State, Plugin } from 'router5';
 import i18next from 'i18next';
+import { IRouterDependencies } from '@wildberries/service-router';
 import { updateMeta, updateLink, updateCustomMeta } from '@/_utils/dom';
-import { IRouterDependecies } from '../../_types';
 
 export const setMeta = (
   router: Router,
-  { getRouteActionResult }: IRouterDependecies,
+  { getRouteActionResult }: IRouterDependencies,
 ): Plugin => ({
   onTransitionSuccess: (toState: State): void => {
     const {

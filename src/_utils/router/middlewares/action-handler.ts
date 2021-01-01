@@ -1,12 +1,12 @@
 import { Router, Middleware, State } from 'router5';
 import promiseSequential from 'promise-sequential';
-import { getActivatedRoutes } from '@/modules/router/_utils';
 import {
-  IAdvancedRoute,
-  IActionParams,
+  getActivatedRoutes,
   IAction,
+  IActionParams,
   IActionResult,
-} from '../_types';
+  IAdvancedRoute,
+} from '@wildberries/service-router';
 
 const prepareError = (error: { status: number }): { status: number } => ({
   ...error,
@@ -53,6 +53,9 @@ export const actionHandler = (router: Router): Middleware => async (
           if (typeof route.loadAction === 'function') {
             actionPromise = new Promise((resolveActionLoad) => {
               route
+                // TODO
+                // eslint-disable-next-line
+                // @ts-ignore
                 .loadAction(store)
                 .catch((err) => {
                   // Если не удалось загрузить чанк переходим на url напрямую
@@ -82,9 +85,15 @@ export const actionHandler = (router: Router): Middleware => async (
               .then(
                 (result: IActionResult): IAdvancedRoute => {
                   if (result.error) {
+                    // TODO
+                    // eslint-disable-next-line
+                    // @ts-ignore
                     parentError = prepareError(result.error);
 
                     return Object.assign(route, {
+                      // TODO
+                      // eslint-disable-next-line
+                      // @ts-ignore
                       actionResult: prepareError(result.error),
                     });
                   }

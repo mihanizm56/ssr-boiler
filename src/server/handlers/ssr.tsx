@@ -1,26 +1,40 @@
 import { Response, NextFunction, Request } from 'express';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import { cloneRouter } from 'router5';
+import { cloneRouter, Router } from 'router5';
 import { createAppStore } from '@wildberries/redux-core-modules';
 import { ABORT_REQUEST_EVENT_NAME } from '@mihanizm56/fetch-api';
 import { geti18Next, i18nextRequest } from '@wildberries/i18next-utils';
 import i18next from 'i18next';
 import {
+  configureRouter,
+  IActionResult,
+  IAdvancedRoute,
+} from '@wildberries/service-router';
+import {
   getI18nextRequestEndpoint,
   getLocaleFromCookies,
 } from '@/_constants/i18next';
-import { configureRouter } from '@/modules/router';
-import { getChunks } from '@/modules/router/dependencies/server/get-chunks';
-import { IActionResult, IAdvancedRoute } from '@/modules/router/_types';
 import { configureCookies } from '@/_utils/cookies';
 import { Html, PropsType as IHtmlProps } from '@/_components/html';
 import { App } from '@/_components/app';
 // Файл chunk-manifest.json генерируется при сборке и позволяет мапить чанки для сервера и клиента по роутам
+import { getChunks } from '@/_utils/router/_utils/get-chunks';
+import { actionHandler } from '@/_utils/router/middlewares/action-handler';
+import routes from '@/pages/routes';
+import { i18nextLoader } from '@/_utils/router/middlewares/i18next-loader';
+import { SSRReduxPrefetchMiddleware } from '@/_utils/router/middlewares/ssr-redux-prefetch-middleware';
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 
 // Базовый объект роутера
-const baseRouter = configureRouter();
+const baseRouter: Router = configureRouter({
+  customActionHandler: actionHandler,
+  routes,
+  defaultRoute: 'home',
+  enablei18nMiddleware: true,
+  customi18nPlugin: i18nextLoader,
+});
+
 baseRouter.setDependencies({
   getChunks: getChunks(baseRouter),
 });
@@ -36,7 +50,7 @@ export const ssr = (baseUrl: string) => async (
 
     const currentLocale = getLocaleFromCookies(cookies);
 
-    // Конфигрурирование redux
+    // Конфигурирование redux
     const store = createAppStore({
       eventNameToCancelRequests: ABORT_REQUEST_EVENT_NAME,
       isSSR: true,
@@ -63,6 +77,7 @@ export const ssr = (baseUrl: string) => async (
           data.translate,
       },
     });
+    router.useMiddleware(SSRReduxPrefetchMiddleware);
 
     // Конфигурирование i18next
     await geti18Next({ locale: currentLocale, debug: false });

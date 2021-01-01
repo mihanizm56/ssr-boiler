@@ -12,9 +12,7 @@ import { createAppStore } from '@wildberries/redux-core-modules';
 // } from '@wildberries/notifications';
 import i18next from 'i18next';
 import { geti18NextSync, i18nextRequest } from '@wildberries/i18next-utils';
-import { configureRouter } from '@/modules/router';
-import { handleRedirect } from '@/modules/router/plugins/client/handle-redirect';
-import { setMeta } from '@/modules/router/plugins/client/set-meta';
+import { configureRouter } from '@wildberries/service-router';
 import { GlobalStateType } from '@/_types';
 import { configureCookies } from '@/_utils/cookies';
 import { Page as ErrorPage } from '@/pages/error/page';
@@ -23,6 +21,11 @@ import {
   getLocaleFromCookies,
   getI18nextRequestEndpoint,
 } from '@/_constants/i18next';
+import { handleRedirect } from './_utils/router/plugins/client/handle-redirect';
+import { setMeta } from './_utils/router/plugins/client/set-meta';
+import { actionHandler } from './_utils/router/middlewares/action-handler';
+import routes from './pages/routes';
+import { i18nextLoader } from './_utils/router/middlewares/i18next-loader';
 
 const customWindow = window as IWindow;
 
@@ -92,7 +95,14 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
   try {
     // startActions(store).then(() => {
     // Router
-    const router = configureRouter(store);
+    const router = configureRouter({
+      setMetaPlugin: setMeta,
+      customActionHandler: actionHandler,
+      routes,
+      defaultRoute: 'home',
+      enablei18nMiddleware: true,
+      customi18nPlugin: i18nextLoader,
+    });
     router.setDependencies({
       store,
       cookies,
@@ -106,8 +116,10 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
           data.translate,
       },
     });
+
+    // eslint-disable-next-line
+    // @ts-ignore
     router.usePlugin(handleRedirect);
-    router.usePlugin(setMeta);
 
     router.start(() => {
       render(
@@ -150,8 +162,9 @@ runApp(ReactDOM.hydrate);
 
 // Автоматический перезапуск приложения
 // В режиме Hot Module Replacement
+// TODO FIX
 if (module.hot) {
-  module.hot.accept('./modules/router', () => {
+  module.hot.accept('./pages/routes.ts', () => {
     const scrollPosition =
       document.documentElement.scrollTop || document.body.scrollTop;
     const setScrollPosition = () => {

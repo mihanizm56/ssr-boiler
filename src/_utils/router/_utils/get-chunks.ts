@@ -1,5 +1,5 @@
+import { getRoute } from '@wildberries/service-router';
 import { Router } from 'router5';
-import { getRoute } from '../../_utils';
 
 export const getChunks = (router: Router): ((name: string) => string[]) => (
   name: string,
