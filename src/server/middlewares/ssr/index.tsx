@@ -172,6 +172,7 @@ export const ssr = (baseUrl: string) => async (
           scripts,
           children: renderedApp,
           ssrData,
+          lang: currentLocale,
         };
 
         const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);

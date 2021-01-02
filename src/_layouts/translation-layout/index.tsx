@@ -18,12 +18,15 @@ export const WrappedComponent = React.memo(
   ({ children, cookies }: PropsType) => {
     const handleChangeLocale = useCallback(
       (event: SyntheticEvent<HTMLButtonElement>) => {
-        const locale = event.currentTarget.getAttribute('data-locale');
+        const newlocale = event.currentTarget.getAttribute('data-locale');
+        const prevLocale = cookies.get(LOCALE_COOKIE);
 
-        cookies.set(LOCALE_COOKIE, locale);
+        if (prevLocale !== newlocale) {
+          cookies.set(LOCALE_COOKIE, newlocale);
 
-        if (isClient) {
-          window.location.reload();
+          if (isClient) {
+            window.location.reload();
+          }
         }
       },
       [cookies],
