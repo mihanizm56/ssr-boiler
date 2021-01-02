@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteNode } from '@wildberries/service-router';
-import { MainLayout } from '@/layouts/main-layout';
-import { TranslationLayout } from '@/layouts/translation-layout';
+import { MainLayout } from '@/_layouts/main-layout';
+import { TranslationLayout } from '@/_layouts/translation-layout';
 import { Page } from './page';
 
 const pageNode = 'home';

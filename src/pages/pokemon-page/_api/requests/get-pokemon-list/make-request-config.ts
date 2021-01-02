@@ -1,5 +1,5 @@
 import { IRequestParams } from '@mihanizm56/fetch-api';
-import { pokemonsEndpoint } from '@/api/endpoints/pokemon';
+import { pokemonsEndpoint } from '../../endpoints/pokemon';
 import { responseSchema } from './response-schema';
 
 export const makeRequestConfig = (): IRequestParams => ({

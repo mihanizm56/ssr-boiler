@@ -1,5 +1,5 @@
 import { StoreInjectConfig } from '@wildberries/redux-core-modules';
-import { getPokemonListRequest } from '@/api/requests/get-pokemon-list';
+import { getPokemonListRequest } from '../_api/requests/get-pokemon-list';
 import pokemonStorage, {
   FETCH_POKEMON_SAGA_NAME,
   fetchPokemonWatcherSaga,

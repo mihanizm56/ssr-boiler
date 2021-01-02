@@ -15,7 +15,7 @@ import { App } from '@/_components/app';
 import {
   getLocaleFromCookies,
   getI18nextRequestEndpoint,
-} from '@/_constants/i18next';
+} from '@/_utils/i18next';
 import { handleRedirect } from '@/_utils/router/plugins/client/handle-redirect';
 import { setMeta } from '@/_utils/router/plugins/client/set-meta';
 import { actionHandler } from '@/_utils/router/middlewares/action-handler';

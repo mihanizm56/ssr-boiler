@@ -14,7 +14,7 @@ import {
 import {
   getI18nextRequestEndpoint,
   getLocaleFromCookies,
-} from '@/_constants/i18next';
+} from '@/_utils/i18next';
 import { configureCookies } from '@/_utils/cookies';
 import { Html, PropsType as IHtmlProps } from '@/_components/html';
 import { App } from '@/_components/app';

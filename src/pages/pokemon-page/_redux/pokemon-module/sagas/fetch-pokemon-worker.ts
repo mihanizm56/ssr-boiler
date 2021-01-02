@@ -1,5 +1,5 @@
 import { put, call } from 'redux-saga/effects';
-import { getPokemonListRequest } from '@/api/requests/get-pokemon-list';
+import { getPokemonListRequest } from '../../../_api/requests/get-pokemon-list';
 import {
   startPokemonLoadingAction,
   stopPokemonLoadingAction,
