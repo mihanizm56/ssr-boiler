@@ -1,6 +1,6 @@
 import path from 'path';
 import dotenv from 'dotenv';
-import { availableEnvKeys } from '../available-env-keys';
+import { availableEnvKeys } from './available-env-keys';
 
 // Установка переменных окружения в process.env для сервера
 dotenv.config({

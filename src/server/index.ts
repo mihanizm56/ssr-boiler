@@ -2,14 +2,17 @@
 
 import 'core-js';
 import 'regenerator-runtime/runtime';
-import './server-set-env';
+import './_utils/server-set-env';
 import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { setupProxy } from './proxy';
-import { ssr } from './handlers/ssr';
-import { errors } from './handlers/errors';
-import { initJSBrotliMiddleware } from './middlewares/brotli';
+import {
+  ssr,
+  errors,
+  brotliMiddleware,
+  i18NextMockBackend,
+} from './middlewares';
 
 const PORT = env.PORT || 3000;
 const BASE_URL = process.env.BASE_URL || '';
@@ -26,44 +29,15 @@ const app = express();
 
 // перехватываем js и css файлы
 // и проставляем заголовки для браузера чтобы брал файлы с расширением .br
-initJSBrotliMiddleware(app);
+brotliMiddleware(app);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 setupProxy({ isProduction, baseUrl });
 
-app.get('/I18N/page-1/ru', (_, res) =>
-  res.status(200).json({
-    translate: {
-      'test-key': 'Пример перевода 1',
-    },
-  }),
-);
-
-app.get('/I18N/page-2/ru', (_, res) =>
-  res.status(200).json({
-    translate: {
-      'test-key': 'Пример перевода 2',
-    },
-  }),
-);
-
-app.get('/I18N/page-1/en', (_, res) =>
-  res.status(200).json({
-    translate: {
-      'test-key': 'Translation example 1',
-    },
-  }),
-);
-
-app.get('/I18N/page-2/en', (_, res) =>
-  res.status(200).json({
-    translate: {
-      'test-key': 'Translation example 2',
-    },
-  }),
-);
+// моковый бекенд для i18next
+i18NextMockBackend(app);
 
 // Путь до статики
 app.use(

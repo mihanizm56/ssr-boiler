@@ -68,8 +68,7 @@ export const Html = ({
       {styles.map((style) => (
         <link key={style} rel="stylesheet" href={style} /> // eslint-disable-line
       ))}
-    </head>
-    <body>
+
       <script
         // env переменные доступные на клиенте
         // eslint-disable-next-line react/no-danger
@@ -90,7 +89,8 @@ export const Html = ({
           __html: `window.ssrData = ${serialize(ssrData)};`,
         }}
       />
-
+    </head>
+    <body>
       <div
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: children }}

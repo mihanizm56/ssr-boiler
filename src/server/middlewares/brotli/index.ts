@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 
-export const initJSBrotliMiddleware = (app) => {
+export const brotliMiddleware = (app) => {
   app.get('*.js', function (req, res, next) {
     req.url += '.br';
     res.set('Content-Encoding', 'br');
