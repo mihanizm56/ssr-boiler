@@ -1,5 +1,4 @@
 import React from 'react';
-import { availableEnvKeys } from '@/available-env-keys';
 import { serialize } from '@/_utils/serialize';
 
 export type PropsType = React.Props<any> & {
@@ -72,15 +71,15 @@ export const Html = ({
     </head>
     <body>
       <script
-        // env переменные доступные на клиенте ??? (оптимизировать)
+        // env переменные доступные на клиенте
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: `
             window.env = {
-              ${availableEnvKeys
-                .filter((key) => env[key])
-                .map((key) => `'${key}': '${env[key]}'`)
-                .join(',')}
+              ${Object.keys(env).reduce(
+                (acc, keyName) => `${acc}${keyName}:${env[keyName]},`,
+                '',
+              )}
             };
           `,
         }}
