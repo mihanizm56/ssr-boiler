@@ -6,7 +6,7 @@ type ParamsType = {
   translations: Record<string, any>;
 };
 
-export const initI18Next = ({ locale, translations }: ParamsType) => {
+export const configureI18Next = ({ locale, translations }: ParamsType) => {
   try {
     const namespacesData = translations ? Object.keys(translations) : [];
 

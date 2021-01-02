@@ -20,8 +20,8 @@ export const lazyLoader = (pageName: string) => {
     return;
   }
 
-  if (pageName === 'test-page') {
+  if (pageName === 'pokemon-page') {
     // eslint-disable-next-line
-    import(/* webpackChunkName: 'test-page' */ '@/pages/test-page/index');
+    import(/* webpackChunkName: 'pokemon-page' */ '@/pages/pokemon-page/index');
   }
 };

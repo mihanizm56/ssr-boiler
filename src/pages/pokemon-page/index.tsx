@@ -6,10 +6,10 @@ import { TranslationLayout } from '@/layouts/translation-layout';
 import { Page } from './page';
 import { storeInjectConfig } from './store-inject-config';
 
-const pageNode = 'test-page';
+const pageNode = 'pokemon-page';
 
 const action = async ({ fromState, toState }) => ({
-  title: 'test-page.title',
+  title: 'pokemon-page.title',
   storeInjectConfig,
   content: (
     <ReduxStoreLoader

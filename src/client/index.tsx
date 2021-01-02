@@ -2,7 +2,7 @@ import 'core-js';
 import 'regenerator-runtime/runtime';
 import deepForceUpdate from 'react-deep-force-update';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM, { hydrate, render } from 'react-dom';
 import { ABORT_REQUEST_EVENT_NAME } from '@mihanizm56/fetch-api';
 import { createAppStore } from '@wildberries/redux-core-modules';
 import i18next from 'i18next';
@@ -21,15 +21,19 @@ import { setMeta } from '@/_utils/router/plugins/client/set-meta';
 import { actionHandler } from '@/_utils/router/middlewares/action-handler';
 import routes from '@/pages/routes';
 import { i18nextLoader } from '@/_utils/router/middlewares/i18next-loader';
-import { initI18Next } from './_utils/init-i18next';
+import { configureI18Next } from './_utils/configure-i18next';
 
 const customWindow = window as IWindow;
+
+// DOM элемент приложения
+const container = document.getElementById('app');
 
 // Применение переводов полученных на сервере
 const { i18nData } = customWindow.ssrData;
 const currentLocale = (i18nData && i18nData.locale) || 'ru'; // ru – default locale
 
-initI18Next({
+// Конфигурирование i18next
+configureI18Next({
   locale: currentLocale,
   translations: i18nData.translations,
 });
@@ -47,8 +51,33 @@ const store = createAppStore({
   isSSR: true,
 });
 
-// Удаление ssrData из памяти
-delete customWindow.ssrData;
+// Конфигурирование router
+const router = configureRouter({
+  setMetaPlugin: setMeta,
+  customActionHandler: actionHandler,
+  routes,
+  defaultRoute: 'home',
+  enablei18nMiddleware: true,
+  customi18nPlugin: i18nextLoader,
+});
+
+router.setDependencies({
+  store,
+  cookies,
+  i18nextConfig: {
+    getLocale: getLocaleFromCookies.bind(null, cookies),
+    i18next,
+    i18nextRequest: (options) => i18nextRequest(options),
+    createEndpoint: ({ locale, namespace }) =>
+      getI18nextRequestEndpoint({ locale, namespace }),
+    formatterResponseData: (data: { translate: Record<string, any> }) =>
+      data.translate,
+  },
+});
+
+// eslint-disable-next-line
+// @ts-ignore
+router.usePlugin(handleRedirect);
 
 // Отключение браузерного восстановления скрола при переходах между страницами
 /* eslint-disable no-restricted-globals */
@@ -57,44 +86,16 @@ if ('scrollRestoration' in history) {
 }
 /* eslint-enable no-restricted-globals */
 
-// Container element
-const container = document.getElementById('app');
+// Удаление ssrData из памяти
+delete customWindow.ssrData;
 
 // Экземпляр приложения
 let appInstance;
 
-const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
+const runApp = (renderer: ReactDOM.Renderer, callback?: () => void) => {
   try {
-    // here you can...
-    // startActions(store).then(() => {
-    const router = configureRouter({
-      setMetaPlugin: setMeta,
-      customActionHandler: actionHandler,
-      routes,
-      defaultRoute: 'home',
-      enablei18nMiddleware: true,
-      customi18nPlugin: i18nextLoader,
-    });
-    router.setDependencies({
-      store,
-      cookies,
-      i18nextConfig: {
-        getLocale: getLocaleFromCookies.bind(null, cookies),
-        i18next,
-        i18nextRequest: (options) => i18nextRequest(options),
-        createEndpoint: ({ locale, namespace }) =>
-          getI18nextRequestEndpoint({ locale, namespace }),
-        formatterResponseData: (data: { translate: Record<string, any> }) =>
-          data.translate,
-      },
-    });
-
-    // eslint-disable-next-line
-    // @ts-ignore
-    router.usePlugin(handleRedirect);
-
     router.start(() => {
-      render(
+      renderer(
         <App
           ref={(node) => {
             appInstance = node;
@@ -113,7 +114,7 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
     });
     // });
   } catch (err) {
-    render(
+    renderer(
       <ErrorPage
         ref={(node) => {
           appInstance = node;
@@ -129,7 +130,7 @@ const runApp = (render: ReactDOM.Renderer, callback?: () => void) => {
   }
 };
 
-runApp(ReactDOM.hydrate);
+runApp(hydrate);
 
 // Автоматический перезапуск приложения
 // В режиме Hot Module Replacement
@@ -145,13 +146,13 @@ if (module.hot) {
     };
 
     if (appInstance && appInstance.updater.isMounted(appInstance)) {
-      runApp(ReactDOM.render, () => {
+      runApp(render, () => {
         deepForceUpdate(appInstance);
         setScrollPosition();
       });
     } else {
       ReactDOM.unmountComponentAtNode(container);
-      runApp(ReactDOM.render, () => {
+      runApp(render, () => {
         setScrollPosition();
       });
     }

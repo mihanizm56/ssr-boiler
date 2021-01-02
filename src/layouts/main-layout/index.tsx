@@ -20,9 +20,9 @@ export const MainLayout = React.memo(({ children }: Props<any>) => (
       <br />
       <ConnectedLink
         onMouseEnter={() => lazyLoader('test-page')}
-        routeName="test-page"
+        routeName="pokemon-page"
       >
-        Test Page
+        Pokemon Page
       </ConnectedLink>
     </nav>
     <div className={s.content}>{children}</div>
