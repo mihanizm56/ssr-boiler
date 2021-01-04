@@ -43,6 +43,9 @@ app.use(
   expressStaticGzip('build/public', {
     enableBrotli: true,
     orderPreference: ['br', 'gz'],
+    serveStatic: {
+      maxAge: isProduction ? '30d' : '1ms',
+    },
   }),
 );
 
