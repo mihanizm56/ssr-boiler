@@ -7,12 +7,7 @@ import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { setupProxy } from './proxy';
-import {
-  ssr,
-  errors,
-  brotliMiddleware,
-  i18NextMockBackend,
-} from './middlewares';
+import { ssr, errors, brotliMiddleware } from './middlewares';
 
 const PORT = env.PORT || 3000;
 const BASE_URL = process.env.BASE_URL || '';
@@ -25,6 +20,11 @@ process.on('unhandledRejection', (reason, p) => {
   process.exit(1);
 });
 
+process.on('SIGINT', () => {
+  console.error('Application terminated with SIGINT');
+  process.exit(0);
+});
+
 const app = express();
 
 // перехватываем js и css файлы
@@ -34,10 +34,12 @@ brotliMiddleware(app);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-setupProxy({ isProduction, baseUrl });
+if (!isProduction) {
+  // моковый бекенд для i18next
+  // i18NextMockBackend(app);
 
-// моковый бекенд для i18next
-i18NextMockBackend(app);
+  setupProxy(app);
+}
 
 // Путь до статики
 app.use(
