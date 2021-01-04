@@ -1,7 +1,8 @@
 FROM node:12.13-alpine
 
 ENV PORT 8080
-ENV BASE_URL http://localhost:3000
+# ENV I18N_ENDPOINT http://localhost:5001/i18N
+# ENV POKEMON_ENDPOINT http://localhost:5002
 
 COPY . .
 

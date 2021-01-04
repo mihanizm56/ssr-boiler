@@ -3,17 +3,18 @@
 import 'core-js';
 import 'regenerator-runtime/runtime';
 import './_utils/server-set-env';
-import path from 'path';
+
 import express from 'express';
 import bodyParser from 'body-parser';
+import expressStaticGzip from 'express-static-gzip';
 import { setupProxy } from './proxy';
-import { ssr, errors, brotliMiddleware } from './middlewares';
+import { ssr, errors } from './middlewares';
 
 const PORT = env.PORT || 3000;
 const BASE_URL = process.env.BASE_URL || '';
 
 const isProduction = !process.argv.includes('--develop');
-const baseUrl = isProduction ? BASE_URL : `http://localhost:${PORT}`;
+const baseUrl = isProduction ? BASE_URL : `http://192.168.0.107:${PORT}`;
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -27,10 +28,6 @@ process.on('SIGINT', () => {
 
 const app = express();
 
-// перехватываем js и css файлы
-// и проставляем заголовки для браузера чтобы брал файлы с расширением .br
-brotliMiddleware(app);
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -41,11 +38,11 @@ if (!isProduction) {
   setupProxy(app);
 }
 
-// Путь до статики
 app.use(
   '/static',
-  express.static(path.resolve(__dirname, 'public'), {
-    maxAge: isProduction ? '30d' : '1ms',
+  expressStaticGzip('build/public', {
+    enableBrotli: true,
+    orderPreference: ['br', 'gz'],
   }),
 );
 

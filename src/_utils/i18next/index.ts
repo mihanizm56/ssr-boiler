@@ -12,10 +12,10 @@ export const getI18nextRequestEndpoint = ({
   locale,
   namespace,
   baseUrl,
-}: ParamsType) =>
-  __SERVER__
-    ? `${baseUrl}/I18N/${namespace}/${locale}`
-    : `/I18N/${namespace}/${locale}`;
+}: ParamsType) => `http://192.168.0.107:8000/I18N/${namespace}/${locale}`;
+// __SERVER__
+//   ? `${baseUrl}/I18N/${namespace}/${locale}`
+//   : `/I18N/${namespace}/${locale}`;
 
 export const getLocaleFromCookies = (cookie) =>
   cookie.get(LOCALE_COOKIE) || DEFAULT_LOCALE;

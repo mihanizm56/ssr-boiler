@@ -1,1 +1,1 @@
-export const pokemonsEndpoint = 'http://localhost:5002/pokemons';
+export const pokemonsEndpoint = 'http://192.168.0.107:8000/pokemons';

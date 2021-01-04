@@ -5,7 +5,7 @@ export const setupProxy = (app: Express) => {
   app.use(
     '/I18N',
     createProxyMiddleware({
-      target: 'http://localhost:5001',
+      target: 'http://192.168.0.107:5001',
       changeOrigin: true,
     }),
   );
