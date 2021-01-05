@@ -1,1 +1,11 @@
-export const pokemonsEndpoint = 'http://192.168.0.107:8000/pokemons';
+export const getPokemonsEndpoint = () => {
+  if (__CLIENT__) {
+    return '/pokemons';
+  }
+
+  if (__DEV__) {
+    return `http://localhost:${env.PORT}/pokemons`;
+  }
+
+  return `${env.POKEMON_ENDPOINT}/pokemons`;
+};

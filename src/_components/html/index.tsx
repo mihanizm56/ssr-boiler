@@ -15,6 +15,7 @@ export type PropsType = React.Props<any> & {
   ssrData?: Record<string, any>;
   children?: string;
   lang: string;
+  clientEnvs: string;
 };
 
 export const Html = ({
@@ -30,6 +31,7 @@ export const Html = ({
   ssrData,
   children,
   lang = 'ru',
+  clientEnvs,
 }: PropsType) => (
   // eslint-disable-next-line jsx-a11y/lang
   <html lang={lang}>
@@ -78,10 +80,7 @@ export const Html = ({
         dangerouslySetInnerHTML={{
           __html: `
             window.env = {
-              ${Object.keys(env).reduce(
-                (acc, keyName) => `${acc}${keyName}:${env[keyName]},`,
-                '',
-              )}
+              ${clientEnvs}
             };
           `,
         }}

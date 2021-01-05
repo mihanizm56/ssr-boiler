@@ -3,19 +3,22 @@ import { LOCALE_COOKIE } from '@/_utils/cookies/_constants';
 type ParamsType = {
   locale: string;
   namespace: string;
-  baseUrl?: string;
 };
 
 export const DEFAULT_LOCALE = 'ru';
 
+export const getLocaleFromCookies = (cookie) =>
+  cookie.get(LOCALE_COOKIE) || DEFAULT_LOCALE;
+
 export const getI18nextRequestEndpoint = ({
   locale,
   namespace,
-  baseUrl,
-}: ParamsType) => `http://192.168.0.107:8000/I18N/${namespace}/${locale}`;
-// __SERVER__
-//   ? `${baseUrl}/I18N/${namespace}/${locale}`
-//   : `/I18N/${namespace}/${locale}`;
+}: ParamsType) => {
+  if (__CLIENT__) {
+    return `/I18N/${namespace}/${locale}`;
+  }
 
-export const getLocaleFromCookies = (cookie) =>
-  cookie.get(LOCALE_COOKIE) || DEFAULT_LOCALE;
+  return __DEV__
+    ? `http://localhost:${env.PORT}/I18N/${namespace}/${locale}`
+    : `${env.I18N_ENDPOINT}/I18N/${namespace}/${locale}`;
+};

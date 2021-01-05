@@ -2,19 +2,15 @@
 
 import 'core-js';
 import 'regenerator-runtime/runtime';
-import './_utils/server-set-env';
-
+import dotenv from 'dotenv';
 import express from 'express';
 import bodyParser from 'body-parser';
 import expressStaticGzip from 'express-static-gzip';
+import { setServerEnvs } from './_utils/collect-envs/set-server-envs';
 import { setupProxy } from './proxy';
 import { ssr, errors } from './middlewares';
 
-const PORT = env.PORT || 3000;
-const BASE_URL = process.env.BASE_URL || '';
-
-const isProduction = !process.argv.includes('--develop');
-const baseUrl = isProduction ? BASE_URL : `http://192.168.0.107:${PORT}`;
+dotenv.config();
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -25,6 +21,14 @@ process.on('SIGINT', () => {
   console.error('Application terminated with SIGINT');
   process.exit(0);
 });
+
+setServerEnvs();
+
+console.log('serverEnvs', env);
+
+const PORT = env.PORT || 3000;
+
+const isProduction = !process.argv.includes('--develop');
 
 const app = express();
 
@@ -50,7 +54,7 @@ app.use(
 );
 
 // Обработка запросов ssr
-app.get('*', ssr(baseUrl));
+app.get('*', ssr(isProduction));
 
 // Обработка ошибок при ssr
 app.use(errors);

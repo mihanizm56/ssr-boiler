@@ -24,6 +24,7 @@ import { actionHandler } from '@/_utils/router/middlewares/action-handler';
 import routes from '@/pages/routes';
 import { i18nextLoader } from '@/_utils/router/middlewares/i18next-loader';
 import { SSRReduxPrefetchMiddleware } from '@/_utils/router/middlewares/ssr-redux-prefetch-middleware';
+import { getClientEnvs } from '@/server/_utils/collect-envs/get-client-envs';
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 
 // Базовый объект роутера
@@ -39,7 +40,7 @@ baseRouter.setDependencies({
   getChunks: getChunks(baseRouter),
 });
 
-export const ssr = (baseUrl: string) => async (
+export const ssr = (isProduction: boolean) => async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -47,6 +48,7 @@ export const ssr = (baseUrl: string) => async (
   try {
     // Конфигрурирование cookies
     const cookies = configureCookies(req, res);
+    const clientEnvs = getClientEnvs();
 
     const currentLocale = getLocaleFromCookies(cookies);
 
@@ -72,7 +74,7 @@ export const ssr = (baseUrl: string) => async (
         i18next,
         i18nextRequest: (options) => i18nextRequest(options),
         createEndpoint: ({ locale, namespace }) =>
-          getI18nextRequestEndpoint({ baseUrl, locale, namespace }),
+          getI18nextRequestEndpoint({ locale, namespace }),
         formatterResponseData: (data: { translate: Record<string, any> }) =>
           data.translate,
       },
@@ -173,6 +175,7 @@ export const ssr = (baseUrl: string) => async (
           children: renderedApp,
           ssrData,
           lang: currentLocale,
+          clientEnvs,
         };
 
         const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
