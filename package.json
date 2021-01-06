@@ -13,7 +13,7 @@
     "@babel/node": "7.8.7",
     "@babel/runtime": "7.9.6",
     "@mihanizm56/fetch-api": "3.5.1",
-    "@mihanizm56/ssr-scripts": "0.0.4-beta.5",
+    "@mihanizm56/ssr-scripts": "0.0.4-beta.6",
     "@wildberries/i18next-utils": "0.0.16-beta.4",
     "@wildberries/redux-core-modules": "1.0.0",
     "@wildberries/service-router": "0.0.30-beta.1",
