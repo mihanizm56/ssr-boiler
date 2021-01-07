@@ -6,7 +6,6 @@ import path from 'path';
 import dotenv from 'dotenv';
 import express from 'express';
 import bodyParser from 'body-parser';
-import expressStaticGzip from 'express-static-gzip';
 import { setServerEnvs as setServerGlobalEnvs } from './_utils/collect-envs/set-server-envs';
 import { setupProxy } from './proxy';
 import { ssr, errors } from './middlewares';
@@ -42,17 +41,6 @@ if (!isProduction) {
     '/static',
     express.static(path.resolve(__dirname, 'public'), {
       maxAge: '1ms',
-    }),
-  );
-} else {
-  app.use(
-    '/static',
-    expressStaticGzip('build/public', {
-      enableBrotli: true,
-      orderPreference: ['br', 'gz'],
-      serveStatic: {
-        maxAge: '30d',
-      },
     }),
   );
 }

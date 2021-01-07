@@ -25,7 +25,6 @@
     "dotenv": "8.2.0",
     "enquirer": "2.3.6",
     "express": "4.17.1",
-    "express-static-gzip": "2.1.1",
     "http-proxy-middleware": "1.0.4",
     "listr2": "3.2.3",
     "pretty-error": "2.1.1",
