@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { cloneRouter, Router } from 'router5';
 import { createAppStore } from '@wildberries/redux-core-modules';
-import { ABORT_REQUEST_EVENT_NAME } from '@mihanizm56/fetch-api';
 import { geti18Next, i18nextRequest } from '@wildberries/i18next-utils';
 import i18next from 'i18next';
 import {
@@ -54,15 +53,11 @@ export const ssr = () => async (
 
     // Конфигурирование redux
     const store = createAppStore({
-      eventNameToCancelRequests: ABORT_REQUEST_EVENT_NAME,
       isSSR: true,
       manualSagaStart: true,
     });
 
     const sagaRunner = store.sagaMiddleware.run(store.rootSaga);
-
-    // Стартовые экшены для каждого запроса
-    // await startActions(store);
 
     // Клонирование базового роутера для обработки запроса
     const router = cloneRouter(baseRouter, baseRouter.getDependencies());

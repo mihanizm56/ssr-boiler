@@ -14,6 +14,7 @@ import { initProcessListeners } from './_utils/init-process-listeners';
 initProcessListeners();
 
 const isProduction = !process.argv.includes('--develop');
+const DEFAULT_PORT_VALUE = '3000';
 
 if (isProduction) {
   dotenv.config();
@@ -23,7 +24,9 @@ if (isProduction) {
 
 setServerGlobalEnvs();
 
-const PORT = env.PORT || 3000;
+if (!env.PORT) {
+  env.PORT = DEFAULT_PORT_VALUE;
+}
 
 const app = express();
 
@@ -53,8 +56,8 @@ app.use(errors);
 
 // Запуск сервера
 if (!module.hot) {
-  app.listen(PORT, () => {
-    console.info(`The server is running at port ${PORT}`);
+  app.listen(env.PORT, () => {
+    console.info(`The server is running at port ${env.PORT}`);
   });
 }
 
