@@ -6,7 +6,7 @@ import { isClient } from '@/_utils/is-client';
 import { LOCALE_COOKIE } from '@/_utils/cookies/_constants';
 import styles from './index.scss';
 
-const BUTTON_NAME = 'button';
+const BUTTON_NAME = 'Button';
 
 const cn = classNames.bind(styles);
 

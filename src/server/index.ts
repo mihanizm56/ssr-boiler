@@ -13,7 +13,7 @@ import { initProcessListeners } from './_utils/init-process-listeners';
 
 initProcessListeners();
 
-const isProduction = !process.argv.includes('--develop');
+export const isProduction = process.env.NODE_ENV === 'production';
 const DEFAULT_PORT_VALUE = '3000';
 
 if (isProduction) {
@@ -33,20 +33,20 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-if (!isProduction) {
-  setupProxy(app);
-}
+// if (!isProduction) {
+setupProxy(app);
+// }
 
 // юзаем просто раздачу статики в режиме разработки
-// в продакшене юзаем добавление заголовков для brotli и gzip сжатия
-if (!isProduction) {
-  app.use(
-    '/static',
-    express.static(path.resolve(__dirname, 'public'), {
-      maxAge: '1ms',
-    }),
-  );
-}
+// в продакшене юзаем nginx
+// if (!isProduction) {
+app.use(
+  '/static',
+  express.static(path.resolve(__dirname, 'public'), {
+    maxAge: '1ms',
+  }),
+);
+// }
 
 // Обработка запросов ssr
 app.get('*', ssr());

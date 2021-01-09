@@ -8,6 +8,8 @@ import { ICookies } from '@/_utils/cookies/_types';
 import { CookiesContext } from '@/_utils/cookies/_components/cookies-context';
 import { RootComponents } from '../root-components';
 import { ErrorBoundary } from '../error-boundary';
+import 'reset-css';
+import 'normalize.css';
 
 interface IProps {
   store: IStore;
