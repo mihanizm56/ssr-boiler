@@ -31,24 +31,27 @@ if (!env.PORT) {
 
 const app = express();
 
-app.use(helmet());
+if (isProduction) {
+  app.use(helmet());
+}
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-if (!isProduction) {
-  setupProxy(app);
-}
+// if (!isProduction) {
+setupProxy(app);
+// }
 
 // юзаем просто раздачу статики в режиме разработки
 // в продакшене юзаем nginx
-if (!isProduction) {
-  app.use(
-    '/static',
-    express.static(path.resolve(__dirname, 'public'), {
-      maxAge: '1ms',
-    }),
-  );
-}
+// if (!isProduction) {
+app.use(
+  '/static',
+  express.static(path.resolve(__dirname, 'public'), {
+    maxAge: '1ms',
+  }),
+);
+// }
 
 // Обработка запросов ssr
 app.get('*', ssr());
