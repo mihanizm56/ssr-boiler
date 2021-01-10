@@ -4,6 +4,7 @@ import 'core-js';
 import 'regenerator-runtime/runtime';
 import path from 'path';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { setServerEnvs as setServerGlobalEnvs } from './_utils/collect-envs/set-server-envs';
@@ -30,23 +31,24 @@ if (!env.PORT) {
 
 const app = express();
 
+app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// if (!isProduction) {
-setupProxy(app);
-// }
+if (!isProduction) {
+  setupProxy(app);
+}
 
 // юзаем просто раздачу статики в режиме разработки
 // в продакшене юзаем nginx
-// if (!isProduction) {
-app.use(
-  '/static',
-  express.static(path.resolve(__dirname, 'public'), {
-    maxAge: '1ms',
-  }),
-);
-// }
+if (!isProduction) {
+  app.use(
+    '/static',
+    express.static(path.resolve(__dirname, 'public'), {
+      maxAge: '1ms',
+    }),
+  );
+}
 
 // Обработка запросов ssr
 app.get('*', ssr());
