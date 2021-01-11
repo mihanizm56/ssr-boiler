@@ -4,7 +4,7 @@ import 'core-js';
 import 'regenerator-runtime/runtime';
 import path from 'path';
 import dotenv from 'dotenv';
-import helmet from 'helmet';
+// import helmet from 'helmet';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { setServerEnvs as setServerGlobalEnvs } from './_utils/collect-envs/set-server-envs';
@@ -31,9 +31,9 @@ if (!env.PORT) {
 
 const app = express();
 
-if (isProduction) {
-  app.use(helmet());
-}
+// if (isProduction) {
+//   app.use(helmet());
+// }
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
