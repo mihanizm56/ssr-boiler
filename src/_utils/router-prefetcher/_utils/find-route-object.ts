@@ -11,12 +11,13 @@ export const findRouteObject = ({
 }: ParamsType): IAdvancedRoute | null => {
   let result = null;
   const splittedRouteName = routeName.split('.');
-  const maxRouteNameDepth = splittedRouteName.length;
+  const maxRouteNameDepth =
+    splittedRouteName.length > 0 ? splittedRouteName.length - 1 : 0;
 
   const recursiveRoutesSearch = ({ findRoutes, depth }) => {
     const routePartialName = splittedRouteName[depth];
 
-    if (!routePartialName || depth === maxRouteNameDepth) {
+    if (!routePartialName || depth > maxRouteNameDepth) {
       return;
     }
 
@@ -27,7 +28,7 @@ export const findRouteObject = ({
             findRoutes: route.children,
             depth: depth + 1,
           });
-        } else {
+        } else if (depth === maxRouteNameDepth) {
           result = route;
         }
       }
