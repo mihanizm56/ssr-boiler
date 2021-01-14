@@ -24,7 +24,8 @@ import routes from '@/pages/routes';
 import { i18nextLoader } from '@/_utils/router/middlewares/i18next-loader';
 import { SSRReduxPrefetchMiddleware } from '@/_utils/router/middlewares/ssr-redux-prefetch-middleware';
 import { getClientEnvs as getClientGLobalEnvs } from '@/server/_utils/collect-envs/get-client-envs';
-import chunksFromManifest from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
+import { collectRouteChunks } from '@/server/_utils/collect-route-chunks';
+import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 
 // Базовый объект роутера
 const baseRouter: Router = configureRouter({
@@ -109,37 +110,12 @@ export const ssr = () => async (
       route.name,
     );
 
-    // Загрузка чанков для текущего роута
-    const routeResources = {
-      chunks: routerDeps.getChunks(route.name) as Array<string> | undefined,
-    };
-
-    // Чанки скриптов и стилей для текущего роута
-    const scripts: Array<string> = [];
-    const styles: Array<string> = [];
-
-    const addChunk = (chunkGroupName: string) => {
-      const chunksInChunkGroupName = chunksFromManifest[chunkGroupName];
-
-      if (Boolean(chunksInChunkGroupName)) {
-        chunksInChunkGroupName.forEach((chunkName: string) => {
-          if (chunkName.match(/\.js$/g)) {
-            scripts.push(chunkName);
-          } else if (chunkName.match(/\.css$/g)) {
-            styles.push(chunkName);
-          }
-        });
-      } else if (__DEV__) {
-        throw new Error(`Chunk with name '${chunkGroupName}' cannot be found`);
-      }
-    };
-
-    // начинаем набивку чанков стилей и скриптов
-    addChunk('client');
-
-    if (routeResources.chunks && routeResources.chunks.length !== 0) {
-      routeResources.chunks.forEach(addChunk);
-    }
+    // Определение чанков скриптов и стилей для текущего роута
+    // (набивка чанков стилей и скриптов из манифеста chunk-manifest.json)
+    const { scripts, styles } = collectRouteChunks({
+      chunks,
+      routeChunks: routerDeps.getChunks(route.name) || [],
+    });
 
     try {
       // ожидание остановки работы саг
@@ -181,6 +157,7 @@ export const ssr = () => async (
         res.send(`<!doctype html>${html}`);
       });
 
+      // останавливаем саги
       store.closeSagas();
     } catch (error) {
       next(error);
