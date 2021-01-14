@@ -6,12 +6,12 @@ import { Page } from './page';
 
 const pageNode = 'page1';
 
-const action = async ({ fromState, store, toState }) => {
+const action = async ({ fromState, store, toState, router }) => {
   return {
     title: 'page1:title',
     content: (
       <TranslationLayout>
-        <MainLayout>
+        <MainLayout router={router}>
           <RouteNode nodeName={pageNode}>
             {({ route, content }) => {
               if (route.name === pageNode) {

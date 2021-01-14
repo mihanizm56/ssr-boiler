@@ -8,7 +8,7 @@ import { storeInjectConfig } from './store-inject-config';
 
 const pageNode = 'pokemon-page';
 
-const action = async ({ fromState, toState }) => ({
+const action = async ({ fromState, toState, router }) => ({
   title: 'pokemon-page.title',
   storeInjectConfig,
   content: (
@@ -18,7 +18,7 @@ const action = async ({ fromState, toState }) => ({
       toState={toState}
     >
       <TranslationLayout>
-        <MainLayout>
+        <MainLayout router={router}>
           <RouteNode nodeName={pageNode}>{() => <Page />}</RouteNode>
         </MainLayout>
       </TranslationLayout>

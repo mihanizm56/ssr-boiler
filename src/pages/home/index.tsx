@@ -6,11 +6,11 @@ import { Page } from './page';
 
 const pageNode = 'home';
 
-const action = async () => ({
+const action = async ({ router }) => ({
   title: 'home:title',
   content: (
     <TranslationLayout>
-      <MainLayout>
+      <MainLayout router={router}>
         <RouteNode nodeName={pageNode}>
           {({ route, content }) => {
             if (route.name === pageNode) {
