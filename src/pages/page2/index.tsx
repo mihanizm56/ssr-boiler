@@ -8,7 +8,7 @@ const pageNode = 'page2';
 
 const action = async ({ router }) => ({
   title: 'page2:title',
-  content: (
+  Content: () => (
     <TranslationLayout>
       <MainLayout router={router}>
         <RouteNode nodeName={pageNode}>

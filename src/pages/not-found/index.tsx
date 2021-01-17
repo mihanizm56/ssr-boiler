@@ -9,7 +9,7 @@ const pageNode = 'not-found';
 const action = async ({ router }) => ({
   title: 'not-found',
   status: 404,
-  content: (
+  Content: () => (
     <TranslationLayout>
       <MainLayout router={router}>
         <RouteNode nodeName={pageNode}>{() => <Page />}</RouteNode>

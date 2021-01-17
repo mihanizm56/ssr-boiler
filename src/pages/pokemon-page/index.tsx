@@ -11,7 +11,7 @@ const pageNode = 'pokemon-page';
 const action = async ({ fromState, toState, router }) => ({
   title: 'pokemon-page.title',
   storeInjectConfig,
-  content: (
+  Content: () => (
     <ReduxStoreLoader
       fromState={fromState}
       storeInjectConfig={storeInjectConfig}

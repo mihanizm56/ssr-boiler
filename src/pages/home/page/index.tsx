@@ -22,5 +22,5 @@ import React from 'react';
 import s from './index.scss';
 
 export const Page = React.memo(() => {
-  return <div className={s.root}>Home</div>;
+  return <div className={s.root}>Home 1234</div>;
 });

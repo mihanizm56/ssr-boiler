@@ -6,7 +6,7 @@ const pageNode = 'error';
 
 const action = async () => ({
   title: 'error.title',
-  content: <RouteNode nodeName={pageNode}>{() => <Page />}</RouteNode>,
+  Content: () => <RouteNode nodeName={pageNode}>{() => <Page />}</RouteNode>,
 });
 
 export default action;
