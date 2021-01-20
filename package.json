@@ -1,5 +1,5 @@
 {
-  "name": "wildberries-frontend-ssr",
+  "name": "boilerplate-frontend-ssr",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -66,7 +66,15 @@
     "cz-customizable": "6.2.0",
     "http-errors": "1.8.0",
     "husky": "4.2.5",
-    "morgan": "1.10.0"
+    "morgan": "1.10.0",
+    "@storybook/addon-actions": "6.1.14",
+    "@storybook/addon-console": "1.2.2",
+    "@storybook/addon-docs": "6.1.14",
+    "@storybook/addon-essentials": "6.1.14",
+    "@storybook/addon-knobs": "6.1.14",
+    "@storybook/addon-links": "6.1.14",
+    "@storybook/addon-viewport": "6.1.14",
+    "@storybook/react": "6.1.14"
   },
   "peerDependencies": {
     "react-redux": "7.2.0",
@@ -88,7 +96,8 @@
     "build-analyse": "ssr-scripts build:analyse",
     "build-start": "npm run build && node ./build/server.js",
     "lint": "npx eslint src/ --ext .ts,.js,.tsx --fix && npx stylelint --fix --max-warnings=0 'src/**/*.{modules.scss,scss,css}' && git add .",
-    "commit": "git add . && git commit --no-edit"
+    "commit": "git add . && git commit --no-edit",
+    "storybook": "start-storybook -p 6006 -c .storybook watch-css -s ./public"
   },
   "eslintConfig": {
     "extends": [

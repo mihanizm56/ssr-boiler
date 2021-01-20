@@ -28,17 +28,19 @@ export const Text = memo(
     tagType: Tag = 'span',
     text,
     isEllipsis,
-  }: PropsType) => (
-    <Tag
-      className={cn('Text', {
-        [`Text--${size}`]: Boolean(size),
-        [`Text--${color}`]: Boolean(color),
-        'Text--uppercase': isUpperCase,
-        'Text--ellipsis': isEllipsis,
-      })}
-      data-name="Text"
-    >
-      {text}
-    </Tag>
-  ),
+  }: PropsType) => {
+    return (
+      <Tag
+        className={cn('Text', {
+          [`Text--${size}`]: Boolean(size),
+          [`Text--${color}`]: Boolean(color),
+          'Text--uppercase': isUpperCase,
+          'Text--ellipsis': isEllipsis,
+        })}
+        data-name="Text"
+      >
+        {text}
+      </Tag>
+    );
+  },
 );
