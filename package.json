@@ -12,7 +12,7 @@
     "@babel/node": "7.8.7",
     "@babel/runtime": "7.9.6",
     "@mihanizm56/fetch-api": "3.5.1",
-    "@mihanizm56/ssr-scripts": "0.1.13-beta.3",
+    "@mihanizm56/ssr-scripts": "0.1.13",
     "@mihanizm56/webpack-magic-redux-modules": "0.0.6",
     "@wildberries/i18next-utils": "1.0.0",
     "@wildberries/redux-core-modules": "1.0.1",
@@ -99,7 +99,8 @@
     "build-start": "npm run build && node ./build/server.js",
     "lint": "npx eslint src/ --ext .ts,.js,.tsx --fix && npx stylelint --fix --max-warnings=0 'src/**/*.{modules.scss,scss,css}' && git add .",
     "commit": "git add . && git commit --no-edit",
-    "storybook": "start-storybook -p 6006 -c .storybook watch-css -s ./public"
+    "storybook": "start-storybook -p 6006 -c .storybook watch-css -s ./public",
+    "cache-clean": "rm -fr node_modules/@mihanizm56/ssr-scripts/node_modules/.cache"
   },
   "eslintConfig": {
     "extends": [

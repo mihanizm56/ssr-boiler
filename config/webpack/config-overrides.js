@@ -1,36 +1,12 @@
-const os = require('os');
+const {
+  getCacheAndThreadLoaderConfig,
+} = require('@mihanizm56/ssr-scripts/configs/webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
-
-export const getCacheAndThreadLoaderConfig = (isProduction) =>
-  isProduction
-    ? [
-        {
-          loader: 'thread-loader',
-          options: {
-            workers: os.cpus().length - 1,
-            poolRespawn: false,
-            workerParallelJobs: 50,
-            poolParallelJobs: 200,
-          },
-        },
-      ]
-    : [
-        { loader: 'cache-loader' },
-        {
-          loader: 'thread-loader',
-          options: {
-            workers: os.cpus().length - 1,
-            poolRespawn: false,
-            workerParallelJobs: 50,
-            poolParallelJobs: 200,
-          },
-        },
-      ];
 
 module.exports = ([clientConfig, serverConfig]) => {
   const isProduction = clientConfig.mode === 'production';
 
-  clientConfig.plugins.push({
+  clientConfig.module.rules.push({
     test: /\.[jt]s$/,
     exclude: /node_modules/,
     use: [
@@ -40,7 +16,7 @@ module.exports = ([clientConfig, serverConfig]) => {
       },
     ],
   });
-  serverConfig.plugins.push({
+  serverConfig.module.rules.push({
     test: /\.[jt]s$/,
     exclude: /node_modules/,
     use: [
