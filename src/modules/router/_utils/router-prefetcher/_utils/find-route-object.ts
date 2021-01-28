@@ -1,4 +1,4 @@
-import { IAdvancedRoute } from '../../router/_types';
+import { IAdvancedRoute } from '../../../_types';
 
 type ParamsType = {
   routes: Array<IAdvancedRoute>;

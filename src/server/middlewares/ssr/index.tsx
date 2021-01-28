@@ -2,18 +2,20 @@ import { Response, NextFunction, Request } from 'express';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { cloneRouter, Router } from 'router5';
-import { getLocaleFromCookies } from '../../../_utils/i18next';
-import { configureCookies } from '../../../_utils/cookies';
+import { actionHandler } from '../../../modules/router/middlewares';
+import { getChunks } from '../../../modules/router/_utils';
+import { configureCookies } from '../../../modules/cookies';
 import { Html, PropsType as IHtmlProps } from '../../../_components/html';
 import { App } from '../../../_components/app';
 // Файл chunk-manifest.json генерируется при сборке и позволяет мапить чанки для сервера и клиента по роутам
-import { getChunks } from '../../../_utils/router/dependencies/server/get-chunks';
-import { actionHandler } from '../../../_utils/router/middlewares/action-handler';
+import {
+  configureRouter,
+  IAdvancedRoute,
+  IActionResult,
+} from '../../../modules/router';
 import routes from '../../../pages/routes';
 import { getClientEnvs as getClientGLobalEnvs } from '../../_utils/collect-envs/get-client-envs';
 import { collectRouteChunks } from '../../_utils/collect-route-chunks';
-import { configureRouter } from '../../../_utils/router';
-import { IActionResult, IAdvancedRoute } from '../../../_utils/router/_types';
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 
 // Базовый объект роутера
@@ -36,8 +38,6 @@ export const ssr = () => async (
     // Конфигрурирование cookies
     const cookies = configureCookies(req, res);
     const clientEnvs = getClientGLobalEnvs();
-
-    const currentLocale = getLocaleFromCookies(cookies);
 
     // Клонирование базового роутера для обработки запроса
     const router = cloneRouter(baseRouter, baseRouter.getDependencies());
@@ -104,7 +104,6 @@ export const ssr = () => async (
         scripts,
         children: renderedApp,
         ssrData,
-        lang: currentLocale,
         clientEnvs,
       };
 

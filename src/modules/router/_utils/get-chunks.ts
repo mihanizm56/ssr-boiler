@@ -1,5 +1,5 @@
 import { Router } from 'router5';
-import { getRoute } from '../../_utils';
+import { getRoute } from './get-route';
 
 export const getChunks = (router: Router): ((name: string) => string[]) => (
   name: string,

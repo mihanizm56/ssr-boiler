@@ -3,14 +3,13 @@ import 'regenerator-runtime/runtime';
 import deepForceUpdate from 'react-deep-force-update';
 import React from 'react';
 import ReactDOM, { hydrate, render } from 'react-dom';
-import { configureCookies } from '../_utils/cookies';
+import { actionHandler } from '../modules/router/middlewares';
+import { handleRedirect, setMeta } from '../modules/router/plugins';
+import { configureCookies } from '../modules/cookies';
 import { Page as ErrorPage } from '../pages/error/page';
 import { App } from '../_components/app';
-import { handleRedirect } from '../_utils/router/plugins/client/handle-redirect';
-import { setMeta } from '../_utils/router/plugins/client/set-meta';
-import { actionHandler } from '../_utils/router/middlewares/action-handler';
+import { configureRouter } from '../modules/router';
 import routes from '../pages/routes';
-import { configureRouter } from '../_utils/router';
 
 const customWindow = window as IWindow;
 
@@ -94,7 +93,7 @@ runApp(hydrate);
 // Автоматический перезапуск приложения
 // В режиме Hot Module Replacement
 if (module.hot) {
-  module.hot.accept('../_utils/router/index.ts', () => {
+  module.hot.accept('../modules/router/index', () => {
     const scrollPosition =
       document.documentElement.scrollTop || document.body.scrollTop;
     const setScrollPosition = () => {

@@ -46,11 +46,5 @@ declare const __DEV__: boolean; // eslint-disable-line no-underscore-dangle
 declare const env: Record<string, string>;
 
 interface IWindow extends Window {
-  ssrData?: {
-    reduxInitialState: IGlobalState;
-    i18nData: {
-      locale: string;
-      translations: Record<string, string | Record<string, string>>;
-    };
-  };
+  ssrData?: {};
 }

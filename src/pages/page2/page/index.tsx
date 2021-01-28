@@ -4,7 +4,7 @@ import styles from './index.scss';
 export const Page = React.memo(() => {
   return (
     <div className={styles.page}>
-      <p>Page 2 </p>
+      <p>Page 123</p>
     </div>
   );
 });

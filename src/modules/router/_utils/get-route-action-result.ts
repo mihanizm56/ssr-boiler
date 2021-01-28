@@ -1,6 +1,6 @@
 import { Router } from 'router5';
-import { getRoute } from '../_utils';
 import { IActionResult } from '../_types';
+import { getRoute } from './get-route';
 
 export const getRouteActionResult = (
   router: Router,

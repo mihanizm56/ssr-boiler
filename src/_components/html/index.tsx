@@ -14,7 +14,6 @@ export type PropsType = React.Props<any> & {
   scripts?: string[];
   ssrData?: Record<string, any>;
   children?: string;
-  lang: string;
   clientEnvs: string;
 };
 
@@ -30,11 +29,9 @@ export const Html = ({
   scripts,
   ssrData,
   children,
-  lang = 'ru',
   clientEnvs,
 }: PropsType) => (
-  // eslint-disable-next-line jsx-a11y/lang
-  <html lang={lang}>
+  <html lang="en">
     <head>
       <meta charSet="utf-8" />
       <meta content="ie=edge" httpEquiv="x-ua-compatible" />

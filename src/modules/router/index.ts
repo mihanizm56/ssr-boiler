@@ -3,10 +3,12 @@ import loggerPlugin from 'router5-plugin-logger';
 import browserPlugin from 'router5-plugin-browser';
 import allRoutes from '../../pages/routes';
 import { actionHandler } from './middlewares/action-handler';
-import { getSegmentActionResult } from './dependencies/get-segment-action-result';
-import { getRouteActionResult } from './dependencies/get-route-action-result';
-import { cloneRoutes } from './_utils';
+import { getSegmentActionResult } from './_utils/get-segment-action-result';
+import { getRouteActionResult } from './_utils/get-route-action-result';
+import { cloneRoutes } from './_utils/clone-routes';
 import { IAdvancedRoute } from './_types';
+
+export * from './_types';
 
 export const configureRouter = (store?: any): Router => {
   const routes = cloneRoutes(allRoutes as IAdvancedRoute[]);

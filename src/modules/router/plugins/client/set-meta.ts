@@ -1,5 +1,9 @@
 import { Router, State, Plugin } from 'router5';
-import { updateMeta, updateLink, updateCustomMeta } from '../../../dom';
+import {
+  updateMeta,
+  updateLink,
+  updateCustomMeta,
+} from '../../../../_utils/dom';
 import { IRouterDependecies } from '../../_types';
 
 export const setMeta = (

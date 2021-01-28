@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteNode } from '../../_utils/router/_components/route-node';
+import { RouteNode } from '../../modules/router/_components/route-node';
 import { MainLayout } from '../../_layouts/main-layout';
 import { Page } from './page';
 
