@@ -2,29 +2,18 @@ import { Response, NextFunction, Request } from 'express';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { cloneRouter, Router } from 'router5';
-import { createAppStore } from '@wildberries/redux-core-modules';
-import { geti18Next, i18nextRequest } from '@wildberries/i18next-utils';
-import i18next from 'i18next';
-import {
-  configureRouter,
-  IActionResult,
-  IAdvancedRoute,
-} from '@wildberries/service-router';
-import {
-  getI18nextRequestEndpoint,
-  getLocaleFromCookies,
-} from '@/_utils/i18next';
-import { configureCookies } from '@/_utils/cookies';
-import { Html, PropsType as IHtmlProps } from '@/_components/html';
-import { App } from '@/_components/app';
+import { getLocaleFromCookies } from '../../../_utils/i18next';
+import { configureCookies } from '../../../_utils/cookies';
+import { Html, PropsType as IHtmlProps } from '../../../_components/html';
+import { App } from '../../../_components/app';
 // Файл chunk-manifest.json генерируется при сборке и позволяет мапить чанки для сервера и клиента по роутам
-import { getChunks } from '@/_utils/router/_utils/get-chunks';
-import { actionHandler } from '@/_utils/router/middlewares/action-handler';
-import routes from '@/pages/routes';
-import { i18nextLoader } from '@/_utils/router/middlewares/i18next-loader';
-import { SSRReduxPrefetchMiddleware } from '@/_utils/router/middlewares/ssr-redux-prefetch-middleware';
-import { getClientEnvs as getClientGLobalEnvs } from '@/server/_utils/collect-envs/get-client-envs';
-import { collectRouteChunks } from '@/server/_utils/collect-route-chunks';
+import { getChunks } from '../../../_utils/router/dependencies/server/get-chunks';
+import { actionHandler } from '../../../_utils/router/middlewares/action-handler';
+import routes from '../../../pages/routes';
+import { getClientEnvs as getClientGLobalEnvs } from '../../_utils/collect-envs/get-client-envs';
+import { collectRouteChunks } from '../../_utils/collect-route-chunks';
+import { configureRouter } from '../../../_utils/router';
+import { IActionResult, IAdvancedRoute } from '../../../_utils/router/_types';
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 
 // Базовый объект роутера
@@ -32,8 +21,6 @@ const baseRouter: Router = configureRouter({
   customActionHandler: actionHandler,
   routes,
   defaultRoute: 'home',
-  enablei18nMiddleware: true,
-  customi18nPlugin: i18nextLoader,
 });
 
 baseRouter.setDependencies({
@@ -52,33 +39,11 @@ export const ssr = () => async (
 
     const currentLocale = getLocaleFromCookies(cookies);
 
-    // Конфигурирование redux
-    const store = createAppStore({
-      isSSR: true,
-      manualSagaStart: true,
-    });
-
-    const sagaRunner = store.sagaMiddleware.run(store.rootSaga);
-
     // Клонирование базового роутера для обработки запроса
     const router = cloneRouter(baseRouter, baseRouter.getDependencies());
     router.setDependencies({
-      store,
       cookies,
-      i18nextConfig: {
-        getLocale: getLocaleFromCookies.bind(null, cookies),
-        i18next,
-        i18nextRequest: (options) => i18nextRequest(options),
-        createEndpoint: ({ locale, namespace }) =>
-          getI18nextRequestEndpoint({ locale, namespace }),
-        formatterResponseData: (data: { translate: Record<string, any> }) =>
-          data.translate,
-      },
     });
-    router.useMiddleware(SSRReduxPrefetchMiddleware);
-
-    // Конфигурирование i18next
-    await geti18Next({ locale: currentLocale, debug: false });
 
     // Обработка пути с router5
     const route: IAdvancedRoute = await new Promise((resolve, reject) => {
@@ -118,47 +83,35 @@ export const ssr = () => async (
     });
 
     try {
-      // ожидание остановки работы саг
-      sagaRunner.toPromise().then(() => {
-        // данные для проброса на клиент
-        const ssrData = {
-          reduxInitialState: store.getState(),
-          i18nData: {
-            locale: currentLocale,
-            translations: i18next.getDataByLanguage(currentLocale),
-          },
-        };
+      // данные для проброса на клиент
+      const ssrData = {};
 
-        // рендер самого приложения
-        const renderedApp = ReactDOM.renderToString(
-          <App cookies={cookies} router={router} store={store} />,
-        );
+      // рендер самого приложения
+      const renderedApp = ReactDOM.renderToString(
+        <App cookies={cookies} router={router} />,
+      );
 
-        // Данные для отрисовки html страницы
-        const data: IHtmlProps = {
-          title: routeActionResult.title,
-          description: routeActionResult.description,
-          keywords: routeActionResult.keywords,
-          canonical: routeActionResult.canonical,
-          ogDescription: routeActionResult.ogDescription,
-          ogUrl: routeActionResult.ogUrl,
-          ogImage: routeActionResult.ogImage,
-          styles,
-          scripts,
-          children: renderedApp,
-          ssrData,
-          lang: currentLocale,
-          clientEnvs,
-        };
+      // Данные для отрисовки html страницы
+      const data: IHtmlProps = {
+        title: routeActionResult.title,
+        description: routeActionResult.description,
+        keywords: routeActionResult.keywords,
+        canonical: routeActionResult.canonical,
+        ogDescription: routeActionResult.ogDescription,
+        ogUrl: routeActionResult.ogUrl,
+        ogImage: routeActionResult.ogImage,
+        styles,
+        scripts,
+        children: renderedApp,
+        ssrData,
+        lang: currentLocale,
+        clientEnvs,
+      };
 
-        const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
+      const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
 
-        res.status(routeActionResult.status || 200);
-        res.send(`<!doctype html>${html}`);
-      });
-
-      // останавливаем саги
-      store.closeSagas();
+      res.status(routeActionResult.status || 200);
+      res.send(`<!doctype html>${html}`);
     } catch (error) {
       next(error);
     }

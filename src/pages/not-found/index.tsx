@@ -1,7 +1,6 @@
 import React from 'react';
-import { RouteNode } from '@wildberries/service-router';
-import { MainLayout } from '@/_layouts/main-layout';
-import { TranslationLayout } from '@/_layouts/translation-layout';
+import { MainLayout } from '../../_layouts/main-layout';
+import { RouteNode } from '../../_utils/router/_components/route-node';
 import { Page } from './page';
 
 const pageNode = 'not-found';
@@ -10,11 +9,9 @@ const action = async ({ router }) => ({
   title: 'not-found',
   status: 404,
   Content: () => (
-    <TranslationLayout>
-      <MainLayout router={router}>
-        <RouteNode nodeName={pageNode}>{() => <Page />}</RouteNode>
-      </MainLayout>
-    </TranslationLayout>
+    <MainLayout router={router}>
+      <RouteNode nodeName={pageNode}>{() => <Page />}</RouteNode>
+    </MainLayout>
   ),
 });
 

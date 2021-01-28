@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Page as ErrorPage } from '@/pages/error/page';
+import { Page as ErrorPage } from '../../pages/error/page';
 
 interface IState {
   error?: Error;

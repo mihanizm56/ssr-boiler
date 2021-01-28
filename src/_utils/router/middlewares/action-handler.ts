@@ -1,12 +1,12 @@
 import { Router, Middleware, State } from 'router5';
 import promiseSequential from 'promise-sequential';
 import {
-  getActivatedRoutes,
-  IAction,
-  IActionParams,
-  IActionResult,
   IAdvancedRoute,
-} from '@wildberries/service-router';
+  IActionParams,
+  IAction,
+  IActionResult,
+} from '../_types';
+import { getActivatedRoutes } from '../_utils';
 
 const prepareError = (error: { status: number }): { status: number } => ({
   ...error,
@@ -17,13 +17,12 @@ export const actionHandler = (router: Router): Middleware => async (
   toState: State,
   fromState: State,
 ): Promise<any> => {
-  const { routes, store, cookies } = router.getDependencies();
+  const { routes, cookies } = router.getDependencies();
 
   const actionParams: IActionParams = {
     router,
     toState,
     fromState,
-    store,
     cookies,
   };
 
@@ -51,13 +50,10 @@ export const actionHandler = (router: Router): Middleware => async (
           // Промис экшена роута
           let actionPromise: Promise<IAction>;
           if (typeof route.loadAction === 'function') {
-            actionPromise = new Promise((resolveActionLoad) => {
+            actionPromise = new Promise(resolveActionLoad => {
               route
-                // TODO
-                // eslint-disable-next-line
-                // @ts-ignore
-                .loadAction(store)
-                .catch((err) => {
+                .loadAction()
+                .catch(err => {
                   // Если не удалось загрузить чанк переходим на url напрямую
                   // Кейс возможен при выкатке новой версии когда имена чанков меняются
                   if (__CLIENT__) {
@@ -85,15 +81,9 @@ export const actionHandler = (router: Router): Middleware => async (
               .then(
                 (result: IActionResult): IAdvancedRoute => {
                   if (result.error) {
-                    // TODO
-                    // eslint-disable-next-line
-                    // @ts-ignore
                     parentError = prepareError(result.error);
 
                     return Object.assign(route, {
-                      // TODO
-                      // eslint-disable-next-line
-                      // @ts-ignore
                       actionResult: prepareError(result.error),
                     });
                   }

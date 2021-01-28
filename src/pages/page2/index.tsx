@@ -1,7 +1,6 @@
 import React from 'react';
-import { RouteNode } from '@wildberries/service-router';
-import { MainLayout } from '@/_layouts/main-layout';
-import { TranslationLayout } from '@/_layouts/translation-layout';
+import { RouteNode } from '../../_utils/router/_components/route-node';
+import { MainLayout } from '../../_layouts/main-layout';
 import { Page } from './page';
 
 const pageNode = 'page2';
@@ -9,19 +8,17 @@ const pageNode = 'page2';
 const action = async ({ router }) => ({
   title: 'page2:title',
   Content: () => (
-    <TranslationLayout>
-      <MainLayout router={router}>
-        <RouteNode nodeName={pageNode}>
-          {({ route, content }) => {
-            if (route.name === pageNode) {
-              return <Page />;
-            }
+    <MainLayout router={router}>
+      <RouteNode nodeName={pageNode}>
+        {({ route, content }) => {
+          if (route.name === pageNode) {
+            return <Page />;
+          }
 
-            return content;
-          }}
-        </RouteNode>
-      </MainLayout>
-    </TranslationLayout>
+          return content;
+        }}
+      </RouteNode>
+    </MainLayout>
   ),
 });
 

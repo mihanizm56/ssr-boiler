@@ -1,14 +1,14 @@
 import React, { PropsWithChildren } from 'react';
 import { ConnectedLink } from 'react-router5';
 import { Router } from 'router5';
-import { routerPrefetcher } from '@/_utils/router-prefetcher/router-prefetcher';
-import s from './index.scss';
+import { routerPrefetcher } from '../../_utils/router-prefetcher';
+import styles from './index.scss';
 
 type PropsType = PropsWithChildren<{ router: Router }>;
 
 export const MainLayout = React.memo(({ children, router }: PropsType) => {
   return (
-    <div className={s.root}>
+    <div className={styles.page}>
       <nav>
         <ConnectedLink
           onMouseEnter={() => routerPrefetcher({ router, routeName: 'home' })}
@@ -31,16 +31,8 @@ export const MainLayout = React.memo(({ children, router }: PropsType) => {
           Page 2
         </ConnectedLink>
         <br />
-        <ConnectedLink
-          onMouseEnter={() =>
-            routerPrefetcher({ router, routeName: 'pokemon-page' })
-          }
-          routeName="pokemon-page"
-        >
-          Pokemon Page
-        </ConnectedLink>
       </nav>
-      <div className={s.content}>{children}</div>
+      <div className={styles.content}>{children}</div>
     </div>
   );
 });

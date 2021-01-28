@@ -1,5 +1,5 @@
 import React from 'react';
-import { serialize } from '@/_utils/serialize';
+import { serialize } from '../../_utils/serialize';
 
 export type PropsType = React.Props<any> & {
   req?: any;
@@ -80,15 +80,15 @@ export const Html = ({
       {ogUrl && <meta content={ogUrl} property="og:url" />}
       {ogImage && <meta content={ogImage} property="og:image" />}
 
-      {styles.map((style) => (
+      {styles.map(style => (
         <link key={style} as="style" href={style} rel="preload" />
       ))}
-      {scripts.map((script) => (
+      {scripts.map(script => (
         <link key={script} as="script" href={script} rel="preload" />
       ))}
       <link href="/static/favicon.ico" rel="shortcut icon" type="image/png" />
 
-      {styles.map((style) => (
+      {styles.map(style => (
         <link key={style} rel="stylesheet" href={style} /> // eslint-disable-line
       ))}
 
@@ -116,7 +116,7 @@ export const Html = ({
         dangerouslySetInnerHTML={{ __html: children }}
         id="app"
       />
-      {scripts.map((script) => (
+      {scripts.map(script => (
         <script key={script} src={script} />
       ))}
     </body>

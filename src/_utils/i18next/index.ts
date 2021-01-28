@@ -1,4 +1,4 @@
-import { LOCALE_COOKIE } from '@/_utils/cookies/_constants';
+import { LOCALE_COOKIE } from '../cookies/_constants';
 
 type ParamsType = {
   locale: string;
@@ -7,7 +7,7 @@ type ParamsType = {
 
 export const DEFAULT_LOCALE = 'ru';
 
-export const getLocaleFromCookies = (cookie) =>
+export const getLocaleFromCookies = cookie =>
   cookie.get(LOCALE_COOKIE) || DEFAULT_LOCALE;
 
 export const getI18nextRequestEndpoint = ({

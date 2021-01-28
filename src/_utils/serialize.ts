@@ -26,7 +26,7 @@ const ESCAPED_CHARS = {
   '\u2029': '\\u2029',
 };
 
-const escapeUnsafeChars = (unsafeChar) => ESCAPED_CHARS[unsafeChar];
+const escapeUnsafeChars = unsafeChar => ESCAPED_CHARS[unsafeChar];
 
 interface IOptions {
   space?: number;
@@ -104,10 +104,10 @@ export const serialize = (obj: object, options: IOptions = {}): string => {
       .substr(0, argsStartsAt)
       .trim()
       .split(' ')
-      .filter((val) => val.length > 0);
+      .filter(val => val.length > 0);
 
     const nonReservedSymbols = def.filter(
-      (val) => RESERVED_SYMBOLS.indexOf(val) === -1,
+      val => RESERVED_SYMBOLS.indexOf(val) === -1,
     );
 
     // enhanced literal objects, example: {key() {}}

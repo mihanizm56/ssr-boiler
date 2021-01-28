@@ -1,4 +1,4 @@
-import { IAdvancedRoute } from '@wildberries/service-router';
+import { IAdvancedRoute } from '../../router/_types';
 
 type ParamsType = {
   routes: Array<IAdvancedRoute>;
@@ -21,7 +21,7 @@ export const findRouteObject = ({
       return;
     }
 
-    findRoutes.forEach((route) => {
+    findRoutes.forEach(route => {
       if (route.name === routePartialName) {
         if (route.children) {
           recursiveRoutesSearch({

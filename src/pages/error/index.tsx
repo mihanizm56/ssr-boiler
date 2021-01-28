@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteNode } from '@wildberries/service-router';
+import { RouteNode } from '../../_utils/router/_components/route-node';
 import { Page } from './page';
 
 const pageNode = 'error';

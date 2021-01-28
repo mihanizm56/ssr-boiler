@@ -1,34 +1,25 @@
 import { Router, State, Plugin } from 'router5';
-import i18next from 'i18next';
-import { IRouterDependencies } from '@wildberries/service-router';
-import { updateMeta, updateLink, updateCustomMeta } from '@/_utils/dom';
+import { updateMeta, updateLink, updateCustomMeta } from '../../../dom';
+import { IRouterDependecies } from '../../_types';
 
 export const setMeta = (
   router: Router,
-  { getRouteActionResult }: IRouterDependencies,
+  { getRouteActionResult }: IRouterDependecies,
 ): Plugin => ({
   onTransitionSuccess: (toState: State): void => {
-    const {
-      title,
-      ogImage,
-      ogUrl,
-      ogDescription,
-      canonical,
-      keywords,
-      description,
-    } = getRouteActionResult(toState.name);
+    const routeActionResult = getRouteActionResult(toState.name);
 
-    if (title) {
-      document.title = i18next.t(title);
-    }
+    const title = routeActionResult.title || 'Boilerplate';
 
-    updateCustomMeta('og:image', ogImage);
-    updateCustomMeta('og:url', ogUrl);
-    updateCustomMeta('og:description', ogDescription);
+    document.title = title;
+
+    updateCustomMeta('og:image', routeActionResult.ogImage);
+    updateCustomMeta('og:url', routeActionResult.ogUrl);
+    updateCustomMeta('og:description', routeActionResult.ogDescription);
     updateCustomMeta('og:title', title);
 
-    updateLink('canonical', canonical);
-    updateMeta('keywords', keywords);
-    updateMeta('description', description);
+    updateLink('canonical', routeActionResult.canonical);
+    updateMeta('keywords', routeActionResult.keywords);
+    updateMeta('description', routeActionResult.description);
   },
 });
